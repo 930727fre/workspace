@@ -1,0 +1,1 @@
+numberOfLayer, sideOfTheTopLayer, growthOfEachLayer, trunkWidth, trunkHeight;
