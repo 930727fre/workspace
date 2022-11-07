@@ -81,7 +81,7 @@ int main(){
                 arr[1]=0;
                 while(1){
                     temp=1;
-                    printf("Guess four number:\nenter:");
+                    printf("Guess four number: (no space required)\nenter:");
                     scanf(" %s",string);
                     //printf("\n");
                     for(int i=0;i<4;i++){
@@ -185,9 +185,10 @@ int manualVerify(int ax){//the the user input a and b's manually
         printf("0");
     }
     printf("%d\n",ax);
-    printf("Please input the A and Bs\nenter:");
-    scanf(" %c%c",&ca,&cb);
-    printf("\n");
+    printf("Please input the A and Bs(space is required)\nenter:");
+    scanf(" %c",&ca);
+    scanf(" %c",&cb);
+
     while(ca<48||cb<48||ca>52||cb>52||96>ca+cb||ca+cb>100){//fool-proof
         printf("Only integers between 0 to 4 is permitted and 0<=A+B<=4.\nPlease input again\nenter:");
         scanf(" %c%c",&ca,&cb);
