@@ -138,7 +138,7 @@ int verify(int bx,int cx){
             temp=0;
             for(int j=0;j<4;j++){
                 if((int)(bx/(int)pow(10,j))==(int)(cx%(int)pow(10,i))){
-                    b++
+                    b++;
                     break;
                 }
             }

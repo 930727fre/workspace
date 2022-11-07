@@ -4,11 +4,7 @@
 void fc(int b);
 
 int main(){
-    int a=1;
-    fc(a);
-    printf("%d",a);
+    printf("%d",48*2);
 }
 
-void fc(int b){
-    b++;
-}
+//the ouput is 83
