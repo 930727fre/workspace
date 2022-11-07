@@ -1,12 +1,14 @@
 #include <stdio.h>
+#include <math.h>
+
+void fc(int b);
 
 int main(){
-    int i=0;
-    while(1){
-        printf("%d\n",i);
-        i++;
-        if(i<0){
-            break;
-        }
-    }
+    int a=1;
+    fc(a);
+    printf("%d",a);
+}
+
+void fc(int b){
+    b++;
 }

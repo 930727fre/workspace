@@ -16,21 +16,9 @@ int main(){
             printf("Please enter the number 1 or 2\n");
             continue;
         }
-        else if(mode==1){
-            printf("Please think of four non-repeating number and keep it in mind\n");
-            int arr[4];
-            generateFourRandomNumber(arr);
-            printf("arr[]=");
-            for(int i=0;i<4;i++){
-                printf("%d ",arr[i]);
-            }
-            printf("\n");   
-            generateFourRandomNumber(input);
-            printf("input[]=");
-            for(int i=0;i<4;i++){
-                printf("%d ",input[i]);
-            }
-            printf("\n");                      
+        else if(mode==1){   
+            
+
 
         }
         else{
