@@ -80,9 +80,7 @@ int main(){
             
         }
         else{//Guessing Mode
-            printf("ejfie");
             generateFourRandomNumber(arr[0]);
-            printf("ejfie");
             printf("ans=%d\n",arr[0]);
             while(1){
                 temp=0;

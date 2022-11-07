@@ -3,124 +3,80 @@
 #include <time.h>
 #include <stdlib.h>
 
-void generateFourRandomNumber(int *ax);
-int verify(int ax,int bx);
-int extract(int ax,int bx);
-int manualVerify(int ax);
+void generateFourRandomNumber(int *ax);// generate four distinctive numbers by calling by reference
+int verify(int ax,int bx);//verify the a and b's between the input and return the value in integer
+int extract(int ax,int bx);//extract bx'th number in ax, which is a integer
+int manualVerify(int ax);//let the user input the a and b's of ax and return in integer format
 char ctemp;
 
 int main(){
-    int temp,counter,upperIndex,index,flag,verificationCode;
-    int arr[5040],ans;
-    srand(time(NULL));
-    //printf("extract 512 3 %d\n",extract(512,3));
+    int temp,upperIndex,index,verificationCode;//verificationCode= store the a and b's of given two inputs
+    int arr[5040],ans;//arr[5040] = store all the possible combination
+    srand(time(NULL));//set the srand seed by time(NULL)
     while(1){
         generateFourRandomNumber(&ans);
-        printf("Mode:(1)Answer/(2)Guessing?\ninput:");
+        printf("Mode:(1)Answer/(2)Guessing(3)Quit?\ninput:");
         scanf(" %c",&ctemp);
-        if(ctemp!=49&&ctemp!=50){
+        if(ctemp!=49&&ctemp!=50&&ctemp!=51){//ascii code 49 = 1 in decimal
             printf("Only integer 1 and 2 is permitted.\nPlease enter again.\n");
             continue;
         }
         else if(ctemp==49){//Answer mode
-            printf("Answer mode\nans= ");
-            if(ans/1000==0){
-                printf("0");
-            }
-            printf("%d\n",ans);
+            printf("Answer mode\n");
             temp=0;
             for(int i=0;i<10;i++){
                 for(int j=0;j<10;j++){
                     for(int k=0;k<10;k++){
                         for(int l=0;l<10;l++){
                             if(i!=j&&i!=k&&i!=l&&j!=k&&j!=l&&k!=l){
-                                arr[temp]=1000*i+100*j+10*k+l;
+                                arr[temp]=1000*i+100*j+10*k+l;//generate all combinations and store in arr
                                 temp++;
                             }
                         }
                     }
                 }
             }
-            for(int i=5037;i<5039;i++){
-                printf("%d\n",arr[i]);
-            }
-            index=5040-1;
+            index=5040-1;//the index starts at the end of the array
             upperIndex=0;
-            verificationCode=verify(arr[5039],ans);
-            printf("ask: %d\n",arr[index]);
+            verificationCode=manualVerify(arr[5039]);//verify the a and b's by user
             while(index!=0){
                 //printf("index= %d\n",index);
-                if(verificationCode==40){
+                if(verificationCode==40){//if the output is 4A0B, then break
                     break;
                 }
                 upperIndex=0;
-                if(verificationCode==verify(arr[index],arr[index-1])){
-                    while(verificationCode==verify(arr[index],arr[upperIndex])){
+                if(verificationCode==verify(arr[index],arr[index-1])){//verify the arr[index] and arr[index-1]
+                    while(verificationCode==verify(arr[index],arr[upperIndex])){//if the verificationCode between the twos are same as the answer's then verify the arr[upperIndex]
                         if(upperIndex==index-1){
-                            verificationCode=verify(arr[index-1],ans);
-                            printf("ask: ");
-                            if(arr[index-1]<1000){
-                                printf("0");
-                            }
-                            printf("%d\n",arr[index-1]);
+                            verificationCode=manualVerify(arr[index-1]);//let the user input the a and b's manually
                             break;
                         }
                         upperIndex++;
                     }
-                    if(verificationCode==40){
+                    if(verificationCode==40){//if it's a 4A0B, the break
                         break;
                     }                
                     if(upperIndex!=index-1){
-                        arr[upperIndex]=arr[index-1];
+                        arr[upperIndex]=arr[index-1];//swap arr[upperIndex] and arr[index-1], replace arr[index-1] with arr[index]
                         arr[index-1]=arr[index];
                     }
                 }
                 else{
                     arr[index-1]=arr[index];
                 }
-                index--;
+                index--;//index moves on
             }
-            if(verificationCode!=40){
-                printf("Cheat!\n");
+            if(verificationCode!=40){//if there is no more possible combinations, then it's a cheat
+                printf("YOU CHEAT\n");
             }
             else{
                 printf("PC WIN\n");
-                if(ans/1000==0){
-                    printf("0");
-                }
-                printf("%d\n",ans);                
 
             }
         }
-        else{
-            printf("ans= ");
-            if(ans/1000==0){
-                printf("0");
-            }
-            printf("%d\n",ans);     
+        else if(ctemp==50){//Guessing mode
             while(1){
                 temp=0;
-                /*for(int i=0;i<4;i++){
-                    if(i==0){
-                        printf("Guess four number:\nenter:");
-                    }
-                    scanf(" %c",&ctemp);
-                    if(ctemp<48||ctemp>57){
-                        printf("Only integer between 0 to 9 is permitted.\nPlease enter again.\n");
-                        i=-1;
-                        continue;
-                    }
-                    else{
-                        arr[1]+=(ctemp-48)*(int)pow(10,4-i);
-                    }
-                    for(int j=1;j<i+1;j++){
-                        if(extract(arr[1],j)==extract(arr[1],0)){
-                            printf("This number is used. Please change a number.\n");
-                            i=-1;
-                            continue;
-                        }
-                    }
-                }*/
                 char string[4];
                 arr[1]=0;
                 while(1){
@@ -130,13 +86,13 @@ int main(){
                     //printf("\n");
                     for(int i=0;i<4;i++){
                         if(string[i]<48||string[i]>57){
-                            printf("Only integer between 0-9 is acceptible.\nPlease input again.\n");
+                            printf("Only integer between 0-9 is acceptible.\nPlease input again.\n");//fool-proof
                             temp=0;
                             break;
                         }
                         for(int j=i+1;j<4;j++){
                             if(string[i]==string[j]){
-                                printf("There are overlapping numbers in the input.\nPlease input again.\n");
+                                printf("There are overlapping numbers in the input.\nPlease input again.\n");//fool-proof
                                 temp=0;
                                 break;
                             }
@@ -152,9 +108,9 @@ int main(){
                 }
 
                 for(int i=0;i<4;i++){
-                    arr[1]+=(int)((string[i]-48)*pow(10,3-i));
+                    arr[1]+=(int)((string[i]-48)*pow(10,3-i));//convert the input into integers 
                 }
-                temp=verify(arr[1],ans);
+                temp=verify(arr[1],ans);//store the verificationCode in temp
                 if(temp==40){
                     printf("YOU WIN\n");
                     break;
@@ -163,26 +119,29 @@ int main(){
                     printf("%dA%dB\n",(int)(temp/10),temp%10);
                 }
             }
-        }        
+        }
+        else if(ctemp==51){//quit the programme
+            break;
+        }
         
     }
 }
 
 void generateFourRandomNumber(int *ax){
     int a=0,b=0,c=0,d=0;
-    while(a==b||a==c||a==d||b==c||b==d||c==d){
+    while(a==b||a==c||a==d||b==c||b==d||c==d){//generate four distinctive numbers
         a=rand() % (9-0 + 1) + 0;
         b=rand() % (9-0 + 1) + 0;
         c=rand() % (9-0 + 1) + 0;
         d=rand() % (9-0 + 1) + 0;
     }
-    *ax=1000*a+100*b+10*c+d;
+    *ax=1000*a+100*b+10*c+d;//store in decimal way
 }
 
 int verify(int ax, int bx){
     int a=0,b=0;
     for(int i=0;i<4;i++){
-        if(extract(ax,i)==extract(bx,i)){
+        if(extract(ax,i)==extract(bx,i)){//check if the numbers of same index are the same, if so, a++
             a++;
         }
         else{
@@ -190,21 +149,20 @@ int verify(int ax, int bx){
                 if(j==i){
                     continue;
                 }
-                else if(extract(ax,j)==extract(bx,i)){
+                else if(extract(ax,j)==extract(bx,i)){//check if there is a same number at other index, if so, b++
                     b++;
                 }
             }
         }
 
     }
-    //printf("verify: %d %d\n",a,b);
     return a*10+b;
 }
 
-int extract(int ax, int bx){
+int extract(int ax, int bx){//extract bx'th number of ax and return
     //printf("ax%d\n",ax);
     int temp;
-    if(ax<1000&&bx==3){
+    if(ax<1000&&bx==3){//since there is no 0 before numbers smaller than 1000, i just return 0 right away
     //printf("extract(%d,%d)=%d\n",ax,bx,0);
         return 0;
     }
@@ -218,10 +176,9 @@ int extract(int ax, int bx){
 
     }
     return 0;
-
 }
 
-int manualVerify(int ax){
+int manualVerify(int ax){//the the user input a and b's manually
     char ca,cb;
     printf("the programe guess: ");
     if(ax<1000){
@@ -231,9 +188,9 @@ int manualVerify(int ax){
     printf("Please input the A and Bs\nenter:");
     scanf(" %c%c",&ca,&cb);
     printf("\n");
-    while(ca<48||cb<48||ca>53||cb>53||96<ca+cb||ca+cb<101){
+    while(ca<48||cb<48||ca>52||cb>52||96>ca+cb||ca+cb>100){//fool-proof
         printf("Only integers between 0 to 4 is permitted and 0<=A+B<=4.\nPlease input again\nenter:");
         scanf(" %c%c",&ca,&cb);
     }
-    return 10*(ca-48)+(cb-48);
+    return 10*(ca-48)+(cb-48);//return in deciaml way
 }

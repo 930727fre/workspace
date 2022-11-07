@@ -12,19 +12,18 @@ char ctemp;
 int main(){
     int temp,counter,upperIndex,index,flag,verificationCode;
     int arr[5040],ans;
-    char ctemp;
     srand(time(NULL));
+    //printf("extract 512 3 %d\n",extract(512,3));
     while(1){
-        //printf("Mode:(1)Answer/(2)Guessing?\ninput:");
-        //scanf("%d",mode);
-        ctemp=48;
-        if(ctemp!=48&&ctemp!=49){
+        generateFourRandomNumber(&ans);
+        printf("Mode:(1)Answer/(2)Guessing?\ninput:");
+        scanf(" %c",&ctemp);
+        if(ctemp!=49&&ctemp!=50){
             printf("Only integer 1 and 2 is permitted.\nPlease enter again.\n");
             continue;
         }
-        else if(ctemp==48){//Answer mode
-            generateFourRandomNumber(&ans);
-            printf("ans= ");
+        else if(ctemp==49){//Answer mode
+            printf("Answer mode\nans= ");
             if(ans/1000==0){
                 printf("0");
             }
@@ -82,14 +81,85 @@ int main(){
                 printf("Cheat!\n");
             }
             else{
-                printf("Jackpot! ");
+                printf("PC WIN\n");
                 if(ans/1000==0){
                     printf("0");
                 }
                 printf("%d\n",ans);                
 
             }
-            break;
+        }
+        else{
+            printf("ans= ");
+            if(ans/1000==0){
+                printf("0");
+            }
+            printf("%d\n",ans);     
+            while(1){
+                temp=0;
+                /*for(int i=0;i<4;i++){
+                    if(i==0){
+                        printf("Guess four number:\nenter:");
+                    }
+                    scanf(" %c",&ctemp);
+                    if(ctemp<48||ctemp>57){
+                        printf("Only integer between 0 to 9 is permitted.\nPlease enter again.\n");
+                        i=-1;
+                        continue;
+                    }
+                    else{
+                        arr[1]+=(ctemp-48)*(int)pow(10,4-i);
+                    }
+                    for(int j=1;j<i+1;j++){
+                        if(extract(arr[1],j)==extract(arr[1],0)){
+                            printf("This number is used. Please change a number.\n");
+                            i=-1;
+                            continue;
+                        }
+                    }
+                }*/
+                char string[4];
+                arr[1]=0;
+                while(1){
+                    temp=1;
+                    printf("Guess four number:\nenter:");
+                    scanf(" %s",string);
+                    //printf("\n");
+                    for(int i=0;i<4;i++){
+                        if(string[i]<48||string[i]>57){
+                            printf("Only integer between 0-9 is acceptible.\nPlease input again.\n");
+                            temp=0;
+                            break;
+                        }
+                        for(int j=i+1;j<4;j++){
+                            if(string[i]==string[j]){
+                                printf("There are overlapping numbers in the input.\nPlease input again.\n");
+                                temp=0;
+                                break;
+                            }
+                        }
+                        if(temp==0){
+                            break;
+                        }
+                    }
+                    if(temp==1){
+                        break;;
+                    }
+
+                }
+
+                for(int i=0;i<4;i++){
+                    arr[1]+=(int)((string[i]-48)*pow(10,3-i));
+                }
+                temp=verify(arr[1],ans);
+                if(temp==40){
+                    printf("YOU WIN\n");
+                    break;
+                }
+                else{
+                    printf("%dA%dB\n",(int)(temp/10),temp%10);
+                }
+            }
         }        
         
     }
@@ -112,28 +182,40 @@ int verify(int ax, int bx){
         if(extract(ax,i)==extract(bx,i)){
             a++;
         }
-        for(int j=0;j<4;j++){
-            if(j==i){
-                continue;
-            }
-            else if(extract(ax,j)==extract(bx,i)){
-                b++;
+        else{
+            for(int j=0;j<4;j++){
+                if(j==i){
+                    continue;
+                }
+                else if(extract(ax,j)==extract(bx,i)){
+                    b++;
+                }
             }
         }
+
     }
+    //printf("verify: %d %d\n",a,b);
     return a*10+b;
 }
 
 int extract(int ax, int bx){
+    //printf("ax%d\n",ax);
     int temp;
+    if(ax<1000&&bx==3){
+    //printf("extract(%d,%d)=%d\n",ax,bx,0);
+        return 0;
+    }
     for(int i=0;i<4;i++){
         if(bx==i){
+        //printf("extract(%d,%d)=%d\n",ax,bx,(int)(ax%10));
+
             return (int)(ax%10);
         }
         ax=(int)(ax/10);        
 
     }
     return 0;
+
 }
 
 int manualVerify(int ax){
