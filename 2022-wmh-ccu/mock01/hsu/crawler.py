@@ -93,7 +93,7 @@ class Crawler(object):
             headers={'Accept-Language':
                      'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7,zh-CN;q=0.6'}
         ).content.decode()
-        sleep(0.1)
+        time.sleep(0.1)
         root = etree.HTML(res)
         texts = root.xpath("/html/body/div[1]/div/div[2]/div/div/div[2]/div/div[2]//text()") #他是一個list
 
