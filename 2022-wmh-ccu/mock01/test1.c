@@ -1,6 +1,8 @@
 #include <stdio.h>
-#include <math.h>
-int extract(int ax,int bx);
-int main(){
+#define p long long
 
+int main(){
+    p int a;
+    a=59 ;
+    printf("%c",a);
 }
