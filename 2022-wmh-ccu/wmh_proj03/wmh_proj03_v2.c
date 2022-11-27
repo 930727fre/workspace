@@ -1,4 +1,4 @@
-#include <stdio.h>//branch quotationCounter==0 completed, quotationCounter !=0 drafting
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 

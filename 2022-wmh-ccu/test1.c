@@ -2,22 +2,11 @@
 #include <stdio.h>
 
 int main () {
-    char str[80] = "This is - www.tutorialspoint.com - website";
-    const char s[] = " ";
+    char str[]="\"add\"  \"apple\" 10";
     char *token;
-    
-    /* get the first token */
-    token = strtok(str, s);
-    
-    /* walk through other tokens */
-    while( token != NULL ) {
-        for(int i=0;i<sizeof(token);i++){
-            printf("%c",token[i]);
-        }
-        printf("\n%s\n\n",token);
-        
-        token = strtok(NULL, s);
+    token=strtok(str,"\"");
+    while(token){
+        printf("%s %lu\n",token,strlen(token));
+        token=strtok(NULL,"\"");
     }
-    
-    return(0);
 }
