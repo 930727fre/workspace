@@ -1,10 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
 
-int main(){
-    if(iscntrl('\v')){
-        printf("🫵");
-    }
+int main()
+{
+    char str[] = "Hello ";
+    char str2[] = "Wolrd!";
+    printf("%s%d",str,99);
 }
