@@ -38,31 +38,9 @@ int sellerMode(){
         for(int i=0;i<4;i++){
             strcpy(arg[i],"-1");
         }
-        /*ptr=strpbrk(cmd,"\"");
-        while(ptr){
-            quotationCounter++;
-            ptr=strpbrk(ptr+1,"\"");
-        }
-        //printf("quotationCounter = %d\n",quotationCounter);
-
-        if(0){
-            token=strtok(cmd," ");
-            while(token){
-                if(argCounter==4){
-                    strcpy(arg[0],"-1");//result in warning.
-                    printf("too many arguments\n");
-                    break;
-                }
-                strcpy(arg[argCounter],token);
-                argCounter++;
-                token=strtok(NULL," ");
-                //printf("%d %s\n",argCounter,token);
-            }
-        }*/
         for(int i=0;i<strlen(cmd);i++){
             if(argCounter==4){
-                strcpy(arg[0],"-1");//result in warning.
-                printf("too many arguments\n");
+                strcpy(arg[0],"too many arguments");//result in warning.
                 break;
             }
             if(i==strlen(cmd)-1){
@@ -100,16 +78,11 @@ int sellerMode(){
                 j++;
             }
             else{
-                strcpy(arg[0],"-1");//result in warning.
-                printf("character forbidden\n");
+                strcpy(arg[0],"character forbidden");//result in warning.
                 break;
             }
         }
         argCounter--;       
-        /*char tempString[1000];
-        strcpy(tempString,strtok(arg[argCounter-1],"\n"));
-        strcpy(arg[argCounter-1],tempString);*/
-        //printf("args[]\n");
         for(int i=0;i<4;i++){
             if(strcmp(arg[i],"-1")!=0){
                 printf("%s\n",arg[i]);
@@ -120,46 +93,51 @@ int sellerMode(){
             printf("-");
         }
         printf("\n");
-    }
 
-
-
-    /*
-        if(strncmp(cmd,"?",strlen(cmd)-1)==0){
+        if(strcmp(arg[0],"too many arguments")==0){
+            printf("too many arguments\n");
+        }
+        else if(strcmp(arg[0],"character forbidden")==0){
+            printf("character forbidden\n");
+        }
+        /*else if(strcmp(arg[0],)==0){
+            printf();
+        }*/    
+        else if(strcmp(arg[0],"?")==0){
             printf("\ncmds: description\n?: Show the man page of current mode.\nadd <product> <num>: add <product> with <num> quantities.\nbuyer mode: enter buyer mode. \ndelete <product>: delete <product> merchandise.\nexit: exit the script. \nincome: print current total income.\nlist [inc|dec] [name|price|quantity]: show the list of merchandises, including goods name, price, and inventory. \nnew <product> <price> [<num>]: add item <product_name> with price <price> and number <num>. if <quantity> is skipped, the number is set 0 by default. \npasswd: change the password if original password given is correct.\n\n");
         }
-        else if(strncmp(cmd,"add",3)==0){///////////////////
+        else if(strcmp(arg[0],"add")==0){
             printf("enter add command\n");        
 
         }
-        else if(strncmp(cmd,"buyer mode",strlen(cmd)-1)==0){
-
+        else if(strcmp(arg[0],"buyer mode")==0){
+            printf("in buyer mode\n");
         }
-        else if(strncmp(cmd,"delete",6)==0){
+        else if(strcmp(arg[0],"delete")==0){
         }
-        else if(strncmp(cmd,"exit",strlen(cmd)-1)==0){
+        else if(strcmp(arg[0],"exit")==0){
             
         }
-        else if(strncmp(cmd,"help",strlen(cmd)-1)==0){
+        else if(strcmp(arg[0],"help")==0){
+            printf("\ncmds: description\n?: Show the man page of current mode.\nadd <product> <num>: add <product> with <num> quantities.\nbuyer mode: enter buyer mode. \ndelete <product>: delete <product> merchandise.\nexit: exit the script. \nincome: print current total income.\nlist [inc|dec] [name|price|quantity]: show the list of merchandises, including goods name, price, and inventory. \nnew <product> <price> [<num>]: add item <product_name> with price <price> and number <num>. if <quantity> is skipped, the number is set 0 by default. \npasswd: change the password if original password given is correct.\n\n");
+        }
+        else if(strcmp(arg[0],"income")==0){
             
         }
-        else if(strncmp(cmd,"income",strlen(cmd)-1)==0){
-            
-        }
-        else if(strncmp(cmd,"list",4)==0){
+        else if(strcmp(cmd,"list")==0){
             //cmdCheck(cmd,0);
         }
-        else if(strncmp(cmd,"new",3)==0){
+        else if(strcmp(cmd,"new")==0){
             //cmdCheck(cmd,0);
         }
-        else if(strncmp(cmd,"passwd",strlen(cmd)-1)==0){
+        else if(strcmp(cmd,"passwd")==0){
             
         }
         else{
-            printf("Wrong input!\n");
+            printf("No such command!\n");
         }
     }    
-    */
+      
 
 
     return 0;
