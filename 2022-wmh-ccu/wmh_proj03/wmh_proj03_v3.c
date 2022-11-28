@@ -61,6 +61,7 @@ int sellerMode(){
         quotationFlag=0;
         argCounter=-1;
         j=0;//index of each arg[argCount][]
+        end=-1;
         for(int i=0;i<4;i++){
             strcpy(arg[i],"-1");
         }
@@ -79,6 +80,7 @@ int sellerMode(){
                 if(quotationFlag){
                     arg[argCounter][j]='\0';
                     end=j;
+
                     j=0;
                 }
                 quotationFlag=(!quotationFlag);
@@ -93,6 +95,7 @@ int sellerMode(){
                 else if(j!=0){
                     arg[argCounter][j]='\0';
                     end=j;
+
                     j=0;
 
                 }
@@ -110,7 +113,13 @@ int sellerMode(){
                 j++;
             }
             if(cmd[i+1]=='\n'){
-                arg[argCounter][end]='\0';
+                if(end==-1){
+                    arg[argCounter][j]='\0';
+                }
+                else{
+                    arg[argCounter][end]='\0';
+
+                }
             }             
                             
         }  
