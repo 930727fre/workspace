@@ -1,12 +1,11 @@
 #include <string.h>
 #include <stdio.h>
 
+void strTok(char*);
 int main () {
-    char str[]="\"add\"  \"apple\" 10";
-    char *token;
-    token=strtok(str,"\"");
-    while(token){
-        printf("%s %lu\n",token,strlen(token));
-        token=strtok(NULL,"\"");
-    }
+    char str[100];
+    fgets(str,100,stdin);
+    printf("%spp",str);
+
+
 }

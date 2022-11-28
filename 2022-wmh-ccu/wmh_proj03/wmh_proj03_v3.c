@@ -1,18 +1,16 @@
-#include <stdio.h>
+#include <stdio.h>//regex finished, A-Z、a-z、0-9、∼、@、#、_、^、*、%、/、.、+、:、= pending
 #include <stdlib.h>
 #include <string.h>
 
 int merchandise[1000];
 int buyerMode();
 int sellerMode();
-int inverse(int);
-void slice(char*,char*);
-int Index;
 int main(){
     char mode;
     while(1){
         printf("(1)Seller Mode/ (2) Buyer Mode\nenter:");
-        scanf(" %c",&mode);
+        //scanf(" %c",&mode);
+        mode=49;
         if(mode==49){
             sellerMode();
         }
@@ -27,30 +25,32 @@ int main(){
 }
 
 int sellerMode(){
-    char cmd[1000],*token,*ptr,arg[4][1000],*tokenTemp;
-    int quotationFlag,quotationCounter,argCounter;
-
+    char cmd[1000],*token,arg[4][1000];
+    int quotationFlag,argCounter,j;
 
     while(1){
         fflush(stdin);
         printf("seller mode>");
         fgets(cmd,1000,stdin);
-        quotationFlag=1;
-        quotationCounter=0;
+        quotationFlag=0;
         argCounter=0;
+        j=0;//index of each arg[argCount][]
         for(int i=0;i<4;i++){
             strcpy(arg[i],"-1");
         }
-        ptr=strpbrk(cmd,"\"");
+        /*ptr=strpbrk(cmd,"\"");
         while(ptr){
             quotationCounter++;
             ptr=strpbrk(ptr+1,"\"");
         }
-        if(quotationCounter==0){
+        //printf("quotationCounter = %d\n",quotationCounter);
+
+        if(0){
             token=strtok(cmd," ");
             while(token){
                 if(argCounter==4){
-                    strcpy(arg[argCounter],"-1");//result in warning.
+                    strcpy(arg[0],"-1");//result in warning.
+                    printf("too many arguments\n");
                     break;
                 }
                 strcpy(arg[argCounter],token);
@@ -58,24 +58,68 @@ int sellerMode(){
                 token=strtok(NULL," ");
                 //printf("%d %s\n",argCounter,token);
             }
-        }
-        else{
-            token=strtok(cmd,"\"");
-            while(token){
-                tokenTemp=strtok(token," ");
-                while(!quotationFlag){
-                    
+        }*/
+        for(int i=0;i<strlen(cmd);i++){
+            if(argCounter==4){
+                strcpy(arg[0],"-1");//result in warning.
+                printf("too many arguments\n");
+                break;
+            }
+            if(i==strlen(cmd)-1){
+                if(j!=0){
+                    arg[argCounter][j]='\0';
+                }
+                j++;
+                printf("argCounter = %d\n",argCounter);
+                break;
+            }
+            if(cmd[i]=='"'){
+                if(quotationFlag){
+                    arg[argCounter][j]='\0';
+                    argCounter++;
+                    j=0;
+                }
+                quotationFlag=(!quotationFlag);
+                if(i==strlen(cmd)-2){
+                    break;
+                } 
+            }   
+            else if(cmd[i]==' '){
+                if(quotationFlag){
+                    arg[argCounter][j]=' ';
+                    j++;
+                }
+                else if(j!=0){
+                    arg[argCounter][j]='\0';
+                    j=0;
+                    argCounter++;
                 }
             }
+            else if(1){//A-Z、a-z、0-9、∼、@、#、_、^、*、%、/、.、+、:、=
+                arg[argCounter][j]=cmd[i];
+                j++;
+            }
+            else{
+                strcpy(arg[0],"-1");//result in warning.
+                printf("character forbidden\n");
+                break;
+            }
         }
-        char tempString[1000];
-        strcpy(tempString,strtok(arg[argCounter-1],"\n"));//delete "\n" in the fgets
-        strcpy(arg[argCounter-1],tempString);
-        printf("args[]\n");
+        argCounter--;       
+        /*char tempString[1000];
+        strcpy(tempString,strtok(arg[argCounter-1],"\n"));
+        strcpy(arg[argCounter-1],tempString);*/
+        //printf("args[]\n");
         for(int i=0;i<4;i++){
-            printf("%s\n",arg[i]);
+            if(strcmp(arg[i],"-1")!=0){
+                printf("%s\n",arg[i]);
+            }
+            
         }
-        break;
+        for(int i=0;i<10;i++){
+            printf("-");
+        }
+        printf("\n");
     }
 
 
@@ -124,25 +168,3 @@ int sellerMode(){
 int buyerMode(){
     return 0;
 }
-
-int inverse(int a){
-    if(a){
-        return 0;
-    }
-    else{
-        return 1;
-    }
-}
-
-/*
-cmds/description
-?/ Show the man page of current mode.
-add <product> <num>/ add <product> with <numb> quantities.
-buyer mode/ enter buyer mode.
-delete <product>/ delete <product> merchandise.
-exit/ exit the script.
-income/ print current total income.
-list [inc|dec] [name|price|quantity]/ show the list of merchandises, including goods name, price, and inventory.
-new <product> <price> [<num>]/ add item <product_name> with price <price> and number <num>. if <quantity> is skipped, the number is set 0 by default.
-passwd/ change the password if original password is given correct.
-*/
