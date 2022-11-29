@@ -111,16 +111,11 @@ int sellerMode(){
 
             if(cmd[i]=='"'){
                 if(quotationFlag){
-                    if(arg[argCounter][j-1]==' '){
-                        arg[argCounter][strrchr(arg[argCounter],' ')-arg[argCounter]]='\0';
-                        //end=strrchr(arg[argCounter],' ')-arg[argCounter];
-                    }
-                    else{
-                        arg[argCounter][j]='\0';
-                        //end=j;
-                    }
-                    //end=-1;
-                    j=0;
+                        while(arg[argCounter][j-1]==' '){
+                            j--;
+                        }
+                        arg[argCounter][j]='\0';  
+                        j=0; 
                 }
                 quotationFlag=(!quotationFlag);
             } 
@@ -143,7 +138,6 @@ int sellerMode(){
             else{
                 if(j==0){
                     argCounter++;
-                    j=0;
                     if(argCounter==4){
                         strcpy(arg[0],"too many arguments");//result in warning.
                         break;
@@ -152,19 +146,12 @@ int sellerMode(){
                 arg[argCounter][j]=cmd[i];
                 j++;
             }
-            if(cmd[i+1]=='\n'){
-                //if(end==-1){
+            if(cmd[i+1]=='\n'&&j!=0){
                     while(arg[argCounter][j-1]==' '){
                         j--;
-
-                    }
+                    }                    
                     arg[argCounter][j]='\0';            
                     j=0;                    
-                /*}
-                else{
-                    arg[argCounter][end]='\0';
-                    //end=-1;
-                }*/
             }
                             
         }  
