@@ -3,9 +3,9 @@
 
 void strTok(char*);
 int main () {
-    if(strcmp("yes ","yes")==0){
-        printf("99");
-    }
+    char str[]="apple com ";
+    char *ptr=str;
+    printf("%d",strrchr(str,' ')-str);
 
 
 }

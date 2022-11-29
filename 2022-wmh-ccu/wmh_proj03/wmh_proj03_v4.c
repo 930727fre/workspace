@@ -3,10 +3,11 @@
 #include <string.h>
 #include <ctype.h>
 
+int merchandise[1000];
 int buyerMode();
 int sellerMode();
 int reservedWord(char*,int );
-char password[1000]="$", goods[20][2][100];
+char password[1000]="$";
 int main(){
     char mode[100];
     while(1){
@@ -29,13 +30,8 @@ int main(){
 
 int sellerMode(){
     char cmd[1000],*token,arg[4][1000],temp[1000]="$";
-    int quotationFlag,argCounter,j,end, upperFlag=0,lowerFlag=0,numberFlag=0,symbolFlag=0,lengthFlag=0;
+    int quotationFlag,argCounter,j,end, upperFlag=0,lowerFlag=0,numberFlag=0,symbolFlag=0;;
     if(strcmp(password,"$")==0){//first time using seller mode.
-        for(int i=0;i<20;i++){//initialize the array of goods
-            for(int j=0;j<2;j++){
-                strcpy(goods[i][j],"0");
-            }
-        }
         printf("First time using seller mode, please set up a password for vendor.\n");
         do{
             printf("enter:");
@@ -45,33 +41,26 @@ int sellerMode(){
             lowerFlag=0;
             numberFlag=0;
             symbolFlag=0;
-            lengthFlag=0;
-            if(strlen(temp)>=6&&strlen(temp)<=20){
-                lengthFlag=1;
-            }
-            else{
-                printf("The length of password should be longer than 6 and shorter than 20\n");
-                continue;
-            }
-            for(int i=0;i<strlen(temp);i++){
-                if(isupper(temp[i])){
-                    upperFlag=1;
+            if(strlen(temp)>=6&&strlen(temp<=20)){
+                for(int i=0;i<strlen(temp);i++){
+                    if(isupper(temp)){
+                        upperFlag=1;
+                    }
+                    if(islower(temp)){
+                        lowerFlag=1;
+                    }
+                    if(isgraph(temp)&&(!isdigit(temp))&&(!isupper(temp))&&(!islower(temp))){
+                        symbolFlag=1;
+                    }
+                    if(isdigit(temp)){
+                        numberFlag=1;
+                    }                     
                 }
-                if(islower(temp[i])){
-                    lowerFlag=1;
-                }
-                if(isgraph(temp[i])&&(!isdigit(temp[i]))&&(!isupper(temp[i]))&&(!islower(temp[i]))){
-                    symbolFlag=1;
-                }
-                if(isdigit(temp[i])){
-                    numberFlag=1;
-                }                     
-            }
+            }while(reservedWord(temp,0)==0);
             if(!(upperFlag&&lowerFlag&&numberFlag&&symbolFlag)){
-                printf("The password must contain number, symbol, upper character, lower character, and only the character below are accepted.(A-Z、a-z、0-9、∼、@、#、_、^、*、%%、/、.、+、:、=)\nPlease input again.\n");
-                continue;
-            }
-        }while(!reservedWord(temp,0)||!(upperFlag&&lowerFlag&&numberFlag&&symbolFlag&&lengthFlag));
+                printf("The password must contain number, symbol, upper character,and lower character\n");
+            }            
+        }while(reservedWord(temp,0)==0||!(upperFlag&&lowerFlag&&numberFlag&&symbolFlag));
         strcpy(password,temp);
         printf("Password set!\n");
         
@@ -99,7 +88,7 @@ int sellerMode(){
             strcpy(arg[i],"-1");
         }
 
-        for(int i=0;i<strlen(cmd);i++){
+        for(int i=0;i<strlen(cmd);i++){      
             if(cmd[i]=='\n'){
                 printf("argCounter = %d\n",argCounter);
                 break;
@@ -111,15 +100,9 @@ int sellerMode(){
 
             if(cmd[i]=='"'){
                 if(quotationFlag){
-                    if(arg[argCounter][j-1]==' '){
-                        arg[argCounter][strrchr(arg[argCounter],' ')-arg[argCounter]]='\0';
-                        //end=strrchr(arg[argCounter],' ')-arg[argCounter];
-                    }
-                    else{
-                        arg[argCounter][j]='\0';
-                        //end=j;
-                    }
-                    //end=-1;
+                    arg[argCounter][j]='\0';
+                    end=j;
+
                     j=0;
                 }
                 quotationFlag=(!quotationFlag);
@@ -132,10 +115,9 @@ int sellerMode(){
                     }
                 }
                 else if(j!=0){
-                    while(arg[argCounter][j-1]==' '){
-                        j--;
-                    }
-                    arg[argCounter][j]='\0';                          
+                    arg[argCounter][j]='\0';
+                    end=j;
+
                     j=0;
 
                 }
@@ -153,30 +135,24 @@ int sellerMode(){
                 j++;
             }
             if(cmd[i+1]=='\n'){
-                //if(end==-1){
-                    while(arg[argCounter][j-1]==' '){
-                        j--;
-
-                    }
-                    arg[argCounter][j]='\0';            
-                    j=0;                    
-                /*}
+                if(end==-1){
+                    arg[argCounter][j]='\0';
+                }
                 else{
                     arg[argCounter][end]='\0';
-                    //end=-1;
-                }*/
-            }
+
+                }
+            }             
                             
         }  
         for(int i=0;i<4;i++){
-            printf("%s\n",arg[i]);   
-            printf("strlen(arg[%d] = %lu\n",i,strlen(arg[i]));
-
+            printf("%s\n",arg[i]);            
         }
         for(int i=0;i<10;i++){
             printf("-");
         }
         printf("\n");
+
         if(strcmp(arg[0],"too many arguments")==0){
             printf("too many arguments\n");
         }
@@ -218,10 +194,11 @@ int sellerMode(){
 }
 
 int reservedWord(char* str, int mode){
+    printf("%s",str);
     for(int i=0;i<strlen(str)-1;i++){
         int temp=str[i];
         if(mode==0){//reserved word of password input
-            if(!((temp>=65&&temp<=90)||(temp>=97&&temp<=122)||(temp>=48&&temp<=57)||strpbrk(str,"~@#_^*%%/.+:="))){
+            if(!((temp>=65&&temp<=90)||(temp>=97&&temp<=122)||(temp>=48&&temp<=57))||strpbrk(str,"~@#_^*%%/.+:=")){
                 printf("The characters ~@#_^*%%/.+:= are prohibited.\nPlease input again\n");
                 return 0;
             }
