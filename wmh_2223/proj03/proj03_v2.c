@@ -1,10 +1,11 @@
-#include <stdio.h>//branch quotationCounter==0 completed, quotationCounter !=0 drafting
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int merchandise[1000];
 int buyerMode();
 int sellerMode();
+int inverse(int);
 void slice(char*,char*);
 int Index;
 int main(){
@@ -26,7 +27,7 @@ int main(){
 }
 
 int sellerMode(){
-    char cmd[1000],*token,*ptr,arg[4][1000];
+    char cmd[1000],*token,*ptr,arg[4][1000],*tokenTemp;
     int quotationFlag,quotationCounter,argCounter;
 
 
@@ -45,33 +46,30 @@ int sellerMode(){
             quotationCounter++;
             ptr=strpbrk(ptr+1,"\"");
         }
-        //printf("quotationCounter = %d\n",quotationCounter);
-        if(quotationCounter%2==1){
-            token=strtok()
-        }
-        else{//quotationCounter is even
-            if(quotationCounter==0){
-                token=strtok(cmd," ");
-                while(token){
-                    if(argCounter==4){
-                        strcpy(arg[0],"-1");//result in warning.
-                        break;
-                    }
-                    strcpy(arg[argCounter],token);
-                    argCounter++;
-                    token=strtok(NULL," ");
-                    //printf("%d %s\n",argCounter,token);
+        if(quotationCounter==0){
+            token=strtok(cmd," ");
+            while(token){
+                if(argCounter==4){
+                    strcpy(arg[argCounter],"-1");//result in warning.
+                    break;
                 }
-            }else{/*
-                token=strtok(cmd,"\"");
-                while(token){
-                    token=strtok(NULL,"\"");
-                    token=strtok(NULL,"\"");          
-                }*/
+                strcpy(arg[argCounter],token);
+                argCounter++;
+                token=strtok(NULL," ");
+                //printf("%d %s\n",argCounter,token);
+            }
+        }
+        else{
+            token=strtok(cmd,"\"");
+            while(token){
+                tokenTemp=strtok(token," ");
+                while(!quotationFlag){
+                    
+                }
             }
         }
         char tempString[1000];
-        strcpy(tempString,strtok(arg[argCounter-1],"\n"));
+        strcpy(tempString,strtok(arg[argCounter-1],"\n"));//delete "\n" in the fgets
         strcpy(arg[argCounter-1],tempString);
         printf("args[]\n");
         for(int i=0;i<4;i++){
@@ -125,6 +123,15 @@ int sellerMode(){
 
 int buyerMode(){
     return 0;
+}
+
+int inverse(int a){
+    if(a){
+        return 0;
+    }
+    else{
+        return 1;
+    }
 }
 
 /*
