@@ -5,21 +5,21 @@
 
 int buyerMode();
 int sellerMode();
-int reservedWord(char*,int );
-int argumentWarning(int);
-int stringIsDigit(char*);
-void sort(char*);
-void passwd(void);
-char password[1000]="$";
+int reservedWord(char*,int );//check if there is a reserved word in the string
+void argumentWarning(int);//check if the arguments are too much or less
+int stringIsDigit(char*);//check if all the character in the string is digit
+void sort(char*);//bubble sort by name, price, or quantity
+void passwd(void);//change or set the password
+char password[1000]="$";//initialize the password
 int changePasswordFlag=0,goodsIndex=0,income=0;
-typedef struct{
+typedef struct{//struct the inventory
     char name[32];
     int price ;
     int quantity;
 } merchandise;
 
 merchandise goods[20]; //initialize the inventory
-merchandise goodsTemp;
+merchandise goodsTemp; //initialize the temp variable of this structure
 int main(){
 
     char mode[100];
@@ -55,7 +55,7 @@ int sellerMode(){
     char cmd[1000],*token,arg[4][1000],temp[1000]="$";
     int quotationFlag,argCounter,j,index,errorInputFlag=0;
 
-    if(!changePasswordFlag){
+    if(!changePasswordFlag){//set up the password if log in for first time
         passwd();
     }
     printf("Please input the password for seller mode\nenter:");
@@ -70,9 +70,9 @@ int sellerMode(){
         printf("seller mode>");
         fgets(cmd,1000,stdin);
         fflush(stdin);
-        quotationFlag=0;
-        argCounter=-1;
-        errorInputFlag=0;
+        quotationFlag=0;//flag for quotation
+        argCounter=-1;//counter for number of argument
+        errorInputFlag=0;//flag for input error
         j=0;//index of each arg[argCount][]
         for(int i=0;i<4;i++){
             strcpy(arg[i],"-1");
@@ -84,18 +84,18 @@ int sellerMode(){
             }
             if((!((cmd[i]>=69&&cmd[i]<=90)||(cmd[i]>=97&&cmd[i]<=122)||cmd[i]==32||cmd[i]==34||(cmd[i]>=48&&cmd[i]<=57)||cmd[i]==63))&&i!=0&&i!=strlen(cmd)-1){
                 printf("The character %c is prohibited.\nPlease input again.\n",cmd[i]);
-                errorInputFlag=1;
+                errorInputFlag=1;//break the for loop after input
                 break;
             }
             if(cmd[i]=='"'){
                 if(quotationFlag){
-                        while(arg[argCounter][j-1]==' '){
+                        while(arg[argCounter][j-1]==' '){//delete the spaces at the end of string
                             j--;
                         }
-                        arg[argCounter][j]='\0';  
+                        arg[argCounter][j]='\0';//end the string
                         j=0; 
                 }
-                quotationFlag=(!quotationFlag);
+                quotationFlag=(!quotationFlag);//reverse quotationFlag
             } 
             else if(cmd[i]==' '){
                 if(quotationFlag){
@@ -133,40 +133,38 @@ int sellerMode(){
                             
         }
         //printf("argCounter==%d\n",argCounter);
-        if(argCounter==-1){
+        if(argCounter==-1){//not input
             continue;
         }
-        if(errorInputFlag){
+        if(errorInputFlag){//reserved word inputted
             continue;
         }  
         
-        if(argCounter>3){//stag(start argument)
+        if(argCounter>3){//too many arguments
             argumentWarning(1);
             continue;
         }
         else if(strcmp(arg[0],"?")==0){
-            printf("\ncmds: description\n?: Show the man page of current mode.\nadd <product> <num>: add <product> with <num> quantities.\nbuyer mode: enter buyer mode. \ndelete <product>: delete <product> merchandise.\nexit: exit the script. \nincome: print current total income.\nlist [inc|dec] [name|price|quantity]: show the list of merchandises, including goods name, price, and inventory. \nnew <product> <price> [<num>]: add item <product_name> with price <price> and number <num>. if <quantity> is skipped, the number is set 0 by default. \npasswd: change the password if original password given is correct.\n\n");
-            if(argCounter>0){
+            if(argCounter>0){//too many arguments
                 argumentWarning(1);
                 continue;
             }
+            printf("\ncmds: description\n?: Show the man page of current mode.\nadd <product> <num>: add <product> with <num> quantities.\nbuyer mode: enter buyer mode. \ndelete <product>: delete <product> merchandise.\nexit: exit the script. \nincome: print current total income.\nlist [inc|dec] [name|price|quantity]: show the list of merchandises, including goods name, price, and inventory. \nnew <product> <price> [<num>]: add item <product_name> with price <price> and number <num>. if <quantity> is skipped, the number is set 0 by default. \npasswd: change the password if original password given is correct.\n\n");
         }
         else if(strcmp(arg[0],"add")==0){
-            if(argCounter>2){
+            if(argCounter>2){//too many arguments
                 argumentWarning(1);
                 continue;
             }             
-            if(argCounter<2){
+            if(argCounter<2){//too less arguments
                 argumentWarning(0);
                 continue;
             }
-            if(!stringIsDigit(arg[2])){
+            if(!stringIsDigit(arg[2])){//check if all the characters are digit
                 printf("Only digits are acceptable in <num> argument\n");
                 continue;
             }
-
             //printf("enter add command\n");
-
             for(int i=0;i<=goodsIndex;i++){
                 if(strcmp(goods[i].name,arg[1])==0){
                     if(goods[i].quantity+atoi(arg[2])>1000){
@@ -189,16 +187,16 @@ int sellerMode(){
             }
             //printf("enter buyer mode command\n");
             if(!buyerMode()){
-                return 0;
+                return 0;//end the process
             }
         }
         else if(strcmp(arg[0],"delete")==0){
-            if(argCounter>1){
+            if(argCounter>1){//too many arguments
                 argumentWarning(1);
                 continue;
 
             }
-            else if(argCounter<1){
+            else if(argCounter<1){//too less arguments
                 argumentWarning(0);
                 continue;
 
@@ -207,9 +205,9 @@ int sellerMode(){
             for(int i=0;i<=goodsIndex;i++){
                 if(!strcmp(goods[i].name,arg[1])){
                     for(int j=i;j<goodsIndex;j++){
-                        goods[j]=goods[j+1];
+                        goods[j]=goods[j+1];//move the product after it a block forward
                     }
-                    strcpy(goods[goodsIndex].name,"-1");
+                    strcpy(goods[goodsIndex].name,"-1");//initialize the struct
                     goods[goodsIndex].price=0;
                     goods[goodsIndex].quantity=0;
                     goodsIndex--;
@@ -226,17 +224,17 @@ int sellerMode(){
                 argumentWarning(1);
                 continue;
             }
-            return 0;
+            return 0;//end the process
         }
         else if(strcmp(arg[0],"help")==0){
-            if(argCounter>0){
+            printf("\ncmds: description\n?: Show the man page of current mode.\nadd <product> <num>: add <product> with <num> quantities.\nbuyer mode: enter buyer mode. \ndelete <product>: delete <product> merchandise.\nexit: exit the script. \nincome: print current total income.\nlist [inc|dec] [name|price|quantity]: show the list of merchandises, including goods name, price, and inventory. \nnew <product> <price> [<num>]: add item <product_name> with price <price> and number <num>. if <quantity> is skipped, the number is set 0 by default. \npasswd: change the password if original password given is correct.\n\n");
+            if(argCounter>0){//too many arguments
                 argumentWarning(1);
                 continue;
             }
-            printf("\ncmds: description\n?: Show the man page of current mode.\nadd <product> <num>: add <product> with <num> quantities.\nbuyer mode: enter buyer mode. \ndelete <product>: delete <product> merchandise.\nexit: exit the script. \nincome: print current total income.\nlist [inc|dec] [name|price|quantity]: show the list of merchandises, including goods name, price, and inventory. \nnew <product> <price> [<num>]: add item <product_name> with price <price> and number <num>. if <quantity> is skipped, the number is set 0 by default. \npasswd: change the password if original password given is correct.\n\n");
         }
         else if(strcmp(arg[0],"income")==0){
-            if(argCounter>0){
+            if(argCounter>0){//too many arguments
                 argumentWarning(1);
                 continue;
             }    
@@ -245,43 +243,50 @@ int sellerMode(){
 
         }
         else if(!strcmp(arg[0],"list")){
-            if(argCounter==0){
+            if(argCounter==0){//0 argument
                 strcpy(arg[2],"name");
-                strcpy(arg[1],"inc");
-                sort(arg[2]);
+                strcpy(arg[1],"inc");//print by inc(default)
+                sort(arg[2]);//sort by name (default)
             }
-            else if(argCounter==1){
+            else if(argCounter==1){//1 argument
                 if(strcmp(arg[1],"inc")&&strcmp(arg[1],"dec")&&strcmp(arg[1],"name")&&strcmp(arg[1],"price")&&strcmp(arg[1],"quantity")){
                         printf("<%s> argument is not acceptable.\n",arg[1]);
                         continue;                    
                 }
-                else if(!strcmp(arg[1],"inc")&&!strcmp(arg[1],"dec")){
+                else if(!strcmp(arg[1],"inc")||!strcmp(arg[1],"dec")){//arguments is inc/dec
                     strcpy(arg[2],"name");
+                }
+                else{//arguments is name/price/quantity
+                    strcpy(arg[2],arg[1]);
                     strcpy(arg[1],"inc");
                 }
-                sort(arg[2]);                    
+                sort(arg[2]);   
             }
             else if(argCounter==2){
                     if(strcmp(arg[1],"inc")&&strcmp(arg[1],"dec")){
                         printf("<%s> argument is not acceptable.\n",arg[1]);
                         continue;
                     }
+                    else if(strcmp(arg[2],"name")&&strcmp(arg[2],"price")&&strcmp(arg[2],"quantity")){
+                        printf("<%s> argument is not acceptable.\n",arg[1]);
+                        continue;
+                    }                    
                     else{
                         sort(arg[2]);
                     }                
             }
             else {
-                argumentWarning(1);
+                argumentWarning(1);//too many arguments
                 continue;                
             }  
             //printf("enter list command\n");
             printf("---product/price/quantity---\n");
-            if(!strcmp(arg[1],"dec")){
+            if(!strcmp(arg[1],"dec")){//print by dec
                 for(int i=goodsIndex-1;i>=0;i--){
                     printf("%s %d %d\n",goods[i].name,goods[i].price,goods[i].quantity);
                 }                
             }
-            else if(!strcmp(arg[1],"inc")){
+            else if(!strcmp(arg[1],"inc")){//print by inc
                 for(int i=0;i<goodsIndex;i++){
                     printf("\"%s\" %d %d\n",goods[i].name,goods[i].price,goods[i].quantity);
                 }                
@@ -289,11 +294,11 @@ int sellerMode(){
         }
         else if(strcmp(arg[0],"new")==0){
             if(argCounter>3){
-                argumentWarning(0);
+                argumentWarning(0);//too many arguments
                 continue;
             } 
             if(argCounter<2){
-                argumentWarning(0);
+                argumentWarning(0);//too less arguments
                 continue;
             }
             if(!stringIsDigit(arg[2])){
@@ -317,7 +322,7 @@ int sellerMode(){
                     break;
                 }
             }
-            if(inInventoryFlag){
+            if(inInventoryFlag){//continue if product is full
                 continue;
             }
             if(atoi(arg[2])>10000){
@@ -340,7 +345,7 @@ int sellerMode(){
             goodsIndex++;
         }
         else if(strcmp(arg[0],"passwd")==0){
-            if(argCounter>0){
+            if(argCounter>0){//too many arguments
                 argumentWarning(1);
                 continue;
             } 
@@ -348,7 +353,7 @@ int sellerMode(){
             printf("Please input the original password in order to change the password.\nenter:");
             fgets(temp,1000,stdin);
             fflush(stdin);    
-            if(!strcmp(temp,password)){
+            if(!strcmp(temp,password)){//check original password
                 passwd();
             }
             else{
@@ -380,16 +385,14 @@ int reservedWord(char* str, int mode){
     }
     return 1;
 }
-int argumentWarning(int a){
+void argumentWarning(int a){
     if(a){
         printf("There were too many arguments\n");
     }
     else{
         printf("There were too few arguments\n");
     }
-    return 0;
 }
-
 void passwd(void){
     char temp[100];
     int upperFlag=0,lowerFlag=0,numberFlag=0,symbolFlag=0,lengthFlag=0;
@@ -422,7 +425,7 @@ void passwd(void){
             if(islower(temp[i])){
                 lowerFlag=1;
             }
-            if(isgraph(temp[i])&&(!isdigit(temp[i]))&&(!isupper(temp[i]))&&(!islower(temp[i]))){
+            if(isgraph(temp[i])&&(!isdigit(temp[i]))&&(!isupper(temp[i]))&&(!islower(temp[i]))){//check if there char not permitted
                 symbolFlag=1;
             }
             if(isdigit(temp[i])){
@@ -440,7 +443,7 @@ void passwd(void){
         
 }
 
-void sort(char* order){
+void sort(char* order){//bubble sort
     printf("sort by %s\n",order);
     if(strcmp(order,"name")==0){
         
@@ -457,7 +460,7 @@ void sort(char* order){
     else if(strcmp(order,"price")==0){
         for(int i=0;i<goodsIndex;i++){
             for(int j=0;j<goodsIndex-i-1;j++){
-                if(goods[j].price==goods[j+1].price&&goods[j].name[0]>goods[j+1].name[0]){
+                if(goods[j].price==goods[j+1].price&&goods[j].name[0]>goods[j+1].name[0]){//same price, then sort by name
                     goodsTemp=goods[j];
                     goods[j]=goods[j+1];
                     goods[j+1]=goodsTemp;
@@ -473,7 +476,7 @@ void sort(char* order){
     else if(strcmp(order,"quantity")==0){
         for(int i=0;i<goodsIndex;i++){
             for(int j=0;j<goodsIndex-i-1;j++){
-                if(goods[j].quantity==goods[j+1].quantity&&goods[j].name[0]>goods[j+1].name[0]){
+                if(goods[j].quantity==goods[j+1].quantity&&goods[j].name[0]>goods[j+1].name[0]){//same quantity, then sort by name
                     goodsTemp=goods[j];
                     goods[j]=goods[j+1];
                     goods[j+1]=goodsTemp;
@@ -613,43 +616,50 @@ int buyerMode(){
             printf("\ncmds: description\n?: Show the man page of current mode.\nhelp: Show the man page of current mode.\nseller mode: enter seller mode.\nlist [inc|dec] [name|price|quantity]: show the list of merchandises, including goods name, price, and inventory.\nbuy <product> <num>: buy <num> quantity of <product>.\n\n");
         }                
         else if(!strcmp(arg[0],"list")){
-            if(argCounter==0){
+            if(argCounter==0){//0 argument
                 strcpy(arg[2],"name");
-                strcpy(arg[1],"inc");
-                sort(arg[2]);
+                strcpy(arg[1],"inc");//print by inc(default)
+                sort(arg[2]);//sort by name (default)
             }
-            else if(argCounter==1){
+            else if(argCounter==1){//1 argument
                 if(strcmp(arg[1],"inc")&&strcmp(arg[1],"dec")&&strcmp(arg[1],"name")&&strcmp(arg[1],"price")&&strcmp(arg[1],"quantity")){
                         printf("<%s> argument is not acceptable.\n",arg[1]);
                         continue;                    
                 }
-                else if(!strcmp(arg[1],"inc")&&!strcmp(arg[1],"dec")){
+                else if(!strcmp(arg[1],"inc")||!strcmp(arg[1],"dec")){//arguments is inc/dec
                     strcpy(arg[2],"name");
+                }
+                else{//arguments is name/price/quantity
+                    strcpy(arg[2],arg[1]);
                     strcpy(arg[1],"inc");
                 }
-                sort(arg[2]);                    
+                sort(arg[2]);   
             }
             else if(argCounter==2){
                     if(strcmp(arg[1],"inc")&&strcmp(arg[1],"dec")){
                         printf("<%s> argument is not acceptable.\n",arg[1]);
                         continue;
                     }
+                    else if(strcmp(arg[2],"name")&&strcmp(arg[2],"price")&&strcmp(arg[2],"quantity")){
+                        printf("<%s> argument is not acceptable.\n",arg[1]);
+                        continue;
+                    }                    
                     else{
                         sort(arg[2]);
                     }                
             }
             else {
-                argumentWarning(1);
+                argumentWarning(1);//too many arguments
                 continue;                
             }  
             //printf("enter list command\n");
             printf("---product/price/quantity---\n");
-            if(!strcmp(arg[1],"dec")){
+            if(!strcmp(arg[1],"dec")){//print by dec
                 for(int i=goodsIndex-1;i>=0;i--){
                     printf("%s %d %d\n",goods[i].name,goods[i].price,goods[i].quantity);
                 }                
             }
-            else if(!strcmp(arg[1],"inc")){
+            else if(!strcmp(arg[1],"inc")){//print by inc
                 for(int i=0;i<goodsIndex;i++){
                     printf("\"%s\" %d %d\n",goods[i].name,goods[i].price,goods[i].quantity);
                 }                
