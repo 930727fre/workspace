@@ -366,7 +366,6 @@ int sellerMode(){
     }    
     return 1;
 }
-
 int reservedWord(char* str, int mode){
     for(int i=0;i<strlen(str)-1;i++){
         int temp=str[i];
@@ -442,7 +441,6 @@ void passwd(void){
     changePasswordFlag++;
         
 }
-
 void sort(char* order){//bubble sort
     printf("sort by %s\n",order);
     if(strcmp(order,"name")==0){
