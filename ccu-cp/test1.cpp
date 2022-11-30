@@ -1,10 +1,15 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <iostream>
+using namespace std;
+/*input
+4
+5
+7755
+*/
+int main(){
+   while(1){
+    string s;
+    cin>>s;
+    cout<<s<<"pp\n";
+   }
 
-int main()
-{
-   char str[100];
-   fgets(str,100,stdin);
-   printf("%s",fgets);
 }
