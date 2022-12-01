@@ -1,4 +1,4 @@
-#include <stdio.h>//buy quantity <0 eroor/ dec list error
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -34,12 +34,12 @@ int main(){
         fgets(mode,100,stdin);
         fflush(stdin);
 
-        if(mode[0]==49){
+        if(!strcmp(mode,"1")){
             if(!sellerMode()){
                 break;
             }
         }
-        else if(mode[0]==50){
+        else if(!strcmp(mode,"2")){
             if(!buyerMode()){
                 break;
             }            
@@ -399,7 +399,7 @@ void passwd(void){
         printf("First time using seller mode, please set up a password for vendor.\n");
     }
     else{
-        printf("Please input the new password\nenter:");
+        printf("Please input the new password\n");
     }
     do{
         printf("enter:");
@@ -415,7 +415,12 @@ void passwd(void){
         }
         else{
             printf("The length of password should be longer than 6 and shorter than 20\n");
-            continue;
+            if(changePasswordFlag){
+                return;
+            }
+            else{
+                continue;
+            }
         }
         for(int i=0;i<strlen(temp);i++){
             if(isupper(temp[i])){
@@ -432,8 +437,13 @@ void passwd(void){
             }                     
         }
         if(!(upperFlag&&lowerFlag&&numberFlag&&symbolFlag)){
-            printf("The password must contain number, symbol, upper character, lower character, and only the character below are accepted.(A-Z、a-z、0-9、∼、@、#、_、^、*、%%、/、.、+、:、=)\nPlease input again.\n");
-            continue;
+            printf("The password must contain number, symbol, upper character, lower character, and only the character below are accepted.(A-Z、a-z、0-9、∼、@、#、_、^、*、%%、/、.、+、:、=)\n");
+            if(changePasswordFlag){
+                return;
+            }
+            else{
+                continue;
+            }
         }
     }while(!reservedWord(temp,0)||!(upperFlag&&lowerFlag&&numberFlag&&symbolFlag&&lengthFlag));
     strcpy(password,temp);
