@@ -34,12 +34,12 @@ int main(){
         fgets(mode,100,stdin);
         fflush(stdin);
 
-        if(!strcmp(mode,"1")){
+        if(!strcmp(mode,"1\n")){
             if(!sellerMode()){
                 break;
             }
         }
-        else if(!strcmp(mode,"2")){
+        else if(!strcmp(mode,"2\n")){
             if(!buyerMode()){
                 break;
             }            
