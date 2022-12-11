@@ -3,11 +3,11 @@
 #include <stdlib.h>
 #include <ctype.h>
 int main(){
-    char str[1000];
+    char str[1000000];
     int flag=0;
     while(1){
         flag=0;
-        fgets(str,1000,stdin);
+        fgets(str,1000000,stdin);
         fflush(stdin);
         if(str[0]=='#'){
             break;
