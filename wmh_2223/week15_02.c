@@ -21,37 +21,37 @@ int main ()
         if(c==' '){
             str[index]='\0';
             index=0;
-            if(strstr(str,"apple")){
-                printf("%s\n",str);
+            if(!strcmp(str,"apple")){
+                //printf("%s\n",str);
 
                 counter[0]++;
             }
-            else if(strstr(str,"banana")){
-                printf("%s\n",str);
+            else if(!strcmp(str,"banana")){
+                //printf("%s\n",str);
 
                 counter[1]++;
             }
-            else if(strstr(str,"kiwi")){
-                printf("%s\n",str);
+            else if(!strcmp(str,"kiwi")){
+                //printf("%s\n",str);
 
                 counter[2]++;
             }
-            else if(strstr(str,"orange")){
-                printf("%s\n",str);
+            else if(!strcmp(str,"orange")){
+                //printf("%s\n",str);
 
                 counter[3]++;               
             }
             else if(!strcmp(str,"papaya")){
-                printf("%s\n",str);
+                //printf("%s\n",str);
 
                 counter[4]++;              
             }
             else if(!strcmp(str,"pineapple")){
-                printf("%s\n%lld\n",str,counter[5]);
+                //printf("%s\n%lld\n",str,counter[5]);
                 counter[5]++;
             }
             for(int i=0;i<6;i++){
-                printf("%lld ",counter[i]);
+                //printf("%lld ",counter[i]);
             }                                        
         }
         else{
