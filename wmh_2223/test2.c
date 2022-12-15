@@ -1,13 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
-union number {
-    float f;
-    int i;
-    int p;
-};
 int main(){
-    union number n;
-    n.i=3;
-    printf("%d",n.p);
-
+    printf("%s",strstr("applet","go"));
 }
