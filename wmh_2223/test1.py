@@ -1,17 +1,14 @@
-import re
+def replace(oldString, newString, filePath):
+    with open(filePath, 'r') as file:
+        # 讀取檔案內容
+        content = file.read()
 
-def checkEmail(email):
-  pattern = r'^[a-zA-Z0-9]{5}@[A-Z]{3}\.com$'
-  if re.match(pattern, email):
-    return email.split('@')[0]
-  else:
-    return None
+    # 將 oldString 替換成 newString
+    content = content.replace(oldString, newString)
 
-# 測試範例
-print(checkEmail('abcde@HAS.com')) # abcde
-print(checkEmail('abc55@HAS.com')) # abc55
-print(checkEmail('abc55@HaS.com')) # None
-print(checkEmail('abcde@HASA.com')) # None
-print(checkEmail('abcd@HAS.com')) # None
-print(checkEmail('abcde@HAS.comm')) # None
-print(checkEmail('abcde@HAS.com.com')) # None
+    with open(filePath, 'w') as file:
+        # 寫回檔案
+        file.write(content)
+
+# 執行 replace 函式
+replace('l', '#', 'd:\\sample.txt')

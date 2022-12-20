@@ -53,11 +53,11 @@ int main(){
             printf("filename/width/height/XResolution/YResolution\n");
             printf("bg:\n%s/",token);
             fseek(bgFptr,0x26,SEEK_SET);
-            fread(buffer,1,4,bgFptr);
-            printf("%d/",buffer);
+            fread(buffer,4,1,bgFptr);
+            printf("%d/",*(int*)&buffer);
             fseek(bgFptr,0x2A,SEEK_SET);
-            fread(buffer,1,1,bgFptr);
-            printf("%d",buffer[0]);            
+            fread(buffer,4,1,bgFptr);
+            printf("%d",*(int*)&buffer);            
             
             printf("\n");
             printf("obj:\n");
