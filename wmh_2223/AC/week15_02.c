@@ -9,7 +9,7 @@ int main ()
    long long int counter[]={0,0,0,0,0,0};
    char str[20];
 
-   fp = fopen("/Users/930727fre/Downloads/fruit.txt","r");
+   fp = fopen("/Users/930727fre/Downloads/wmh_hw02/fruit.txt","r");
    if(fp == NULL) 
    {
       perror("Error in opening file");
@@ -18,6 +18,7 @@ int main ()
    while(!feof(fp))
    {
         c = fgetc(fp);
+        printf("%c",c);
         if(c==' '){
             str[index]='\0';
             index=0;
