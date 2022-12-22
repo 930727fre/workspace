@@ -99,14 +99,14 @@ int main(){
         }
         printf("\n");
     }
-    /*if(spec[0][0]!=spec[1][0]||spec[0][1]!=spec[1][1]){
+    if(spec[0][0]!=spec[1][0]||spec[0][1]!=spec[1][1]){
         printf("The size of object and mask aren't same.\n");
         return -1;
     }
     if(spec[0][0]!=spec[2][0]||spec[0][1]!=spec[2][1]){
         printf("The size of object and background aren't same.\n");
         return -1;        
-    }*/
+    }
     rewind(bgFptr);
     for(int i=0;i<54;i++){
         char c = fgetc(bgFptr);
@@ -115,7 +115,7 @@ int main(){
     index=0;
     for(int i=0;i<spec[0][1];i++){
         for(int j=0;j<spec[0][0]||index%4!=0;j++){
-            for(int k=0;k<3;k++){                
+            for(int k=0;k<3;k++){
                 if(j>=spec[0][0]){
                     fputc(0x00,outputFptr);
                 }
