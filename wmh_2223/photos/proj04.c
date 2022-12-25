@@ -23,7 +23,7 @@ int main(){
             token=strtok(NULL,"= ;");
             deleteEnter(token);
             printf("OUTPUT:\n%s\n",token);
-            outputFptr=fopen(token,"w+");
+            outputFptr=fopen(token,"wb");
             if(outputFptr==NULL){
                 printf("output path error\n");
                 return -1;
@@ -117,6 +117,8 @@ int main(){
         for(int j=0;j<spec[0][0]||index%4!=0;j++){
             for(int k=0;k<3;k++){
                 if(j>=spec[0][0]){
+                    printf("padding\n");
+                    int o=fgetc(objFptr),b=fgetc(bgFptr),m=fgetc(mskFptr);
                     fputc(0x00,outputFptr);
                 }
                 else{
@@ -126,6 +128,7 @@ int main(){
             }
         }
     }
+    printf("%d/%d\n",index,3*spec[0][1]*spec[0][0]);
     fclose(iniFptr);
     fclose(objFptr);
     fclose(mskFptr);
@@ -140,19 +143,6 @@ void deleteEnter(char* token){
 }
 
 int fc(int index){
-    /*char buffer[1000];
-    fseek(objFptr,index+54,SEEK_SET);
-    fread(buffer,4,1,objFptr);      
-    int o = *(int*)&buffer;  
-    fseek(mskFptr,index+54,SEEK_SET);
-    fread(buffer,4,1,mskFptr);      
-    int m = *(int*)&buffer; 
-    fseek(bgFptr,index+54,SEEK_SET);
-    fread(buffer,4,1,bgFptr);      
-    int b = *(int*)&buffer;  
-    if(index<3){
-        printf("o %d /b %d /m %d\n",o,b,m);
-    }*/
     int o=fgetc(objFptr),b=fgetc(bgFptr),m=fgetc(mskFptr);
 
     return b*m/255+o*(255-m)/255;
