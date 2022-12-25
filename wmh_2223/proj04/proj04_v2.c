@@ -24,14 +24,23 @@ int main(){
     char buffer[1000],*token;
     unsigned spec[3][4];
     int index;
-    iniFptr=fopen("setting2.ini","rb");
+    printf("Please input the path of .ini.\n>>");
+    scanf("%s",buffer);
+    iniFptr=fopen(buffer,"rb");
+    if(iniFptr==NULL){
+        printf("The path of .ini is invalid.");
+        return -1;
+    }
+    else{
+        printf("spec: width/ height/ xResolution/ yResolution\n");
+    }
     while(fgets(buffer,1000,iniFptr)!=NULL){
         token=strtok(buffer," ;");
         deleteEnter(token);      
         if(strstr(token,"OUTPUT")){
             token=strtok(buffer,"=");
             token=strtok(NULL,"=");
-            printf("%s\n",token);
+            printf("output: %s\n",token);
             outputFptr=fopen(token,"wb");
             if(outputFptr==NULL){
                 printf("output file path error\n");
@@ -41,7 +50,7 @@ int main(){
         else if(strstr(token,"OBJ")){
             token=strtok(buffer,"=");
             token=strtok(NULL,"=");
-            printf("%s: ",token);
+            printf("obj:\n%s: ",token);
             objFptr=fopen(token,"rb");
             if(objFptr==NULL){
                 printf("object file path error\n");
@@ -58,7 +67,7 @@ int main(){
         else if(strstr(token,"MSK")){
             token=strtok(buffer,"=");
             token=strtok(NULL,"=");
-            printf("%s: ",token);
+            printf("MSK:\n%s: ",token);
             mskFptr=fopen(token,"rb");
             if(mskFptr==NULL){
                 printf("mask file path error\n");
@@ -76,7 +85,7 @@ int main(){
         else if(strstr(token,"BG")){
             token=strtok(buffer,"=");
             token=strtok(NULL,"=");
-            printf("%s: ",token);
+            printf("BG:\n%s: ",token);
             bgFptr=fopen(token,"rb");
             if(bgFptr==NULL){
                 printf("background file path error\n");
@@ -121,13 +130,12 @@ int main(){
 
         }
     }
-
-
     fclose(objFptr);
     fclose(bgFptr);
     fclose(iniFptr);
     fclose(outputFptr);
     fclose(mskFptr);
+    printf("Process end\n");
 }
 
 void deleteEnter(char* token){
