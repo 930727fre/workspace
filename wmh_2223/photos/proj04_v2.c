@@ -106,15 +106,19 @@ int main(){
     index=0;
     for(int i=0;i<spec[0][1];i++){
         for(int j=0;j<spec[0][0]||index%4!=0;j++){
-            if(j>=spec[0][0]){
-                fputc(0,outputFptr);
-                fgetc(bgFptr);
-                fgetc(objFptr);
-                fgetc(mskFptr);
+            for(int k=0;k<3;k++){
+                if(j>=spec[0][0]){
+                    fputc(0,outputFptr);
+                    fgetc(bgFptr);
+                    fgetc(objFptr);
+                    fgetc(mskFptr);
+                    printf("padding\n");
+                }
+                else{
+                    fputc(fc(),outputFptr);
+                }
             }
-            else{
-                fputc(fc(),outputFptr);
-            }
+
         }
     }
 
