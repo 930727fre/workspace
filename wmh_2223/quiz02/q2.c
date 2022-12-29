@@ -11,7 +11,7 @@ int main(){
     //scanf("%s",str);
     digit = strlen(str);
     for(int i=0;i<digit;i++){
-        printf("%llu\n",map(str[i])*pow(58,digit-i-1));
+        printf("%13.f\n",map(str[i])*pow(58,digit-i-1));
         dec+=map(str[i])*pow(58,digit-i-1);
     }
     //printf("dec = %llu\n",dec);
