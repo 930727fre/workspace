@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
-FILE *iniFptr,*objFptr,*bgFptr,*mskFptr,*outputFptr;
-struct {
+FILE *iniFptr,*objFptr,*bgFptr,*mskFptr,*outputFptr;// file pointer for each .ini/ object/ background/ mask/ output file
+struct {//store the file info in struct
     unsigned size;
     char reserved[4];
     unsigned offsetBits;
@@ -19,10 +19,10 @@ struct {
     unsigned importantColors;   
 }bmpinfo;
 int fc(void);
-void deleteEnter(char*);
+void deleteEnter(char*);// delete '\n' at the end of string
 int main(){
     char buffer[1000],*token;
-    unsigned spec[3][4];
+    unsigned spec[3][4];// record width/height/xresolution/yresolution of each file
     int index;
     printf("Please input the path of .ini.\n>>");
     scanf("%s",buffer);
@@ -34,7 +34,7 @@ int main(){
     else{
         printf("spec: width/ height/ xResolution/ yResolution\n");
     }
-    while(fgets(buffer,1000,iniFptr)!=NULL){
+    while(fgets(buffer,1000,iniFptr)!=NULL){//extract the path from .ini
         token=strtok(buffer," ;");
         deleteEnter(token);      
         if(strstr(token,"OUTPUT")){
@@ -47,7 +47,7 @@ int main(){
                 return -1;
             }
         }
-        else if(strstr(token,"OBJ")){
+        else if(strstr(token,"OBJ")){//extract obj path from input
             token=strtok(buffer,"=");
             token=strtok(NULL,"=");
             printf("obj:\n%s: ",token);
@@ -64,7 +64,7 @@ int main(){
             spec[0][2]=bmpinfo.XResolution;
             spec[0][3]=bmpinfo.YResolution;
         } 
-        else if(strstr(token,"MSK")){
+        else if(strstr(token,"MSK")){//extract msk path from input
             token=strtok(buffer,"=");
             token=strtok(NULL,"=");
             printf("MSK:\n%s: ",token);
@@ -82,7 +82,7 @@ int main(){
             spec[1][3]=bmpinfo.YResolution;                      
           
         }   
-        else if(strstr(token,"BG")){
+        else if(strstr(token,"BG")){//extract bg path from input
             token=strtok(buffer,"=");
             token=strtok(NULL,"=");
             printf("BG:\n%s: ",token);
@@ -100,7 +100,7 @@ int main(){
             spec[2][3]=bmpinfo.YResolution;
         }
     }
-    if(spec[0][0]!=spec[1][0]||spec[0][1]!=spec[1][1]){
+    if(spec[0][0]!=spec[1][0]||spec[0][1]!=spec[1][1]){//foolproof of width and height
         printf("The size of object and mask aren't same.\n");
         return -1;
     }
@@ -110,21 +110,20 @@ int main(){
     }
     rewind(objFptr);
     for(int i=0;i<54;i++){
-        fputc(fgetc(objFptr),outputFptr);
+        fputc(fgetc(objFptr),outputFptr);//copy the first 54 bytes
     }
     index=0;
     for(int i=0;i<spec[0][1];i++){
         for(int j=0;j<spec[0][0]||index%4!=0;j++){
             for(int k=0;k<3;k++){
-                if(j>=spec[0][0]){
+                if(j>=spec[0][0]){//padding if index%4!=0
                     fputc(0,outputFptr);
                     fgetc(bgFptr);
                     fgetc(objFptr);
                     fgetc(mskFptr);
-                    printf("padding\n");
                 }
                 else{
-                    fputc(fc(),outputFptr);
+                    fputc(fc(),outputFptr);//fill the output byte by the pixel given
                 }
             }
 
