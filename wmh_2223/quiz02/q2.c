@@ -4,7 +4,9 @@
 
 int map(char);
 int main(){
-    char str[50]="2kQE4C";//2kQE4C 
+    //char str[50]="2kQE4C";
+    char str[50]="23456abc";
+
     unsigned long long digit=0,dec=0,temp;
     //scanf("%s",str);
     digit = strlen(str);
@@ -19,12 +21,11 @@ int main(){
         temp=dec;
         temp = temp<<(8*(31-i));
         temp = temp>>56;        
-        if(temp==0){
-            printf("00 ");
+        if(temp<10){
+            printf("0");
         }
-        else{
-            printf("%llx ",temp);
-        }
+        printf("%llx ",temp);
+
     }
     printf("\n");
 }
