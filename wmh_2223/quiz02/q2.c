@@ -1,31 +1,29 @@
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
+#include <math.h>
 
 int map(char);
 int main(){
-    //char str[50]="2kQE4C";
-    char str[50]="23456abc";
+    char str[20]="23456abc";
+    scanf("%s",str);
+    unsigned long long dec=0,power=1,temp;
+    for(int i=0;i<strlen(str)-1;i++){
+        power*=58;
+    }
+    for(int i=0;i<strlen(str);i++){
+        dec+=map(str[i])*power;
+        power/=58;
 
-    unsigned long long digit=0,dec=0,temp;
-    //scanf("%s",str);
-    digit = strlen(str);
-    for(int i=0;i<digit;i++){
-        printf("%13.f\n",map(str[i])*pow(58,digit-i-1));
-        dec+=map(str[i])*pow(58,digit-i-1);
     }
     //printf("dec = %llu\n",dec);
-    temp = dec;
-    printf("%llu %llx\n",dec,dec);
-    for(int i=7;i>=0;i--){
+    for(int i=15;i>=0;i--){
         temp=dec;
-        temp = temp<<(8*(31-i));
-        temp = temp>>56;        
-        if(temp<10){
-            printf("0");
+        temp = temp<<(4*(15-i));
+        temp = temp>>60;
+        printf("%llx",temp);
+        if(i!=0&&i%2==0){
+            printf(" ");
         }
-        printf("%llx ",temp);
-
     }
     printf("\n");
 }
@@ -50,11 +48,3 @@ int map(char w){
         return w-'m'+44;
     }
 }
-
-
-/*
-
-10010
-
-*/
-//30 31
