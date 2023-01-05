@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>// doesn't work on judge
-
+#include <stdlib.h>
 int main(){
     int t,flag=0,index;
     char str[1000],*token;
-    scanf(" %d",&t);
+    fgets(str,1000,stdin);
+    t=atoi(str);
     fflush(stdin);
     //t=5;
     for(int caseCounter=1;caseCounter<=t;caseCounter++){
