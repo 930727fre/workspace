@@ -1,0 +1,3 @@
+-g flag
+step 
+quit
