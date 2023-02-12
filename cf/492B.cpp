@@ -1,31 +1,26 @@
 #include <iostream>
 #include <algorithm>
+#include <iomanip>
 using namespace std;
-int cmp(double a,double b){
-    if(a>b){
-        return 0;
-    }
-    else{
-        return 1;
-    }
-}
 int main(){
-    double n,l,temp;
-    double max;
+    int n;
+    double max,l;
     cin>>n>>l;
-    double arr[(int)l];
+    double arr[n];
     for(int i=0;i<n;i++){
         cin>>arr[i];
     }
-    sort(arr,arr+(int)n);
-    max=arr[0];
+    sort(arr,arr+n);
+    if(arr[0]>l-arr[n-1]){
+        max=arr[0];
+    }
+    else{
+        max=l-arr[n-1];
+    }
     for(int i=1;i<n;i++){
-        if((arr[i]-arr[i-1])/2>max){
-            max=(arr[i]-arr[i-1])/2;
+        if((arr[i]-arr[i-1])/2.0>max){
+            max=(arr[i]-arr[i-1])/2.0;
         }
     }
-    if(l-arr[(int)n-1]>max){
-        max=l-arr[(int)n-1];
-    }
-    cout<<max;
+    cout<<setprecision(10)<<max<<endl;
 }
