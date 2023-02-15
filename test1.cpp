@@ -4,9 +4,7 @@ using namespace std;
 int main(){
 
     char *ptr,*n;
-    ptr=(char*)malloc(18);
-    n=(char*)malloc(18);
-    cin>>n;
-    strcpy(ptr,n);
-    cout<<sizeof(ptr)<<ptr;
+    ptr[0]=57;
+    ptr[1]=NULL;
+    cout<<strlen(ptr);
 }
