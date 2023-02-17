@@ -20,3 +20,8 @@
 `p arr@10`: print arr[0] to arr[9]
 
 `p arr[7]`: print arr[7]
+
+
+
+
+i
