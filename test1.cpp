@@ -2,9 +2,8 @@
 #include <cstdlib>
 using namespace std;
 int main(){
-
-    char *ptr,*n;
-    ptr[0]=57;
-    ptr[1]=NULL;
-    cout<<strlen(ptr);
+    int **ptr;
+    ptr=(int**)malloc(1);
+    ptr[0][0]=1;
+    cout<<ptr[0][0];
 }

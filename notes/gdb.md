@@ -21,7 +21,3 @@
 
 `p arr[7]`: print arr[7]
 
-
-
-
-i
