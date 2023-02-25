@@ -19,7 +19,7 @@ int race(int a, int b){
             return 1;
         }
         else{
-            return 0;
+            return 2;
         }
     }
     count+=race(a+1,b);
