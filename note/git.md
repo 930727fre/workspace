@@ -20,9 +20,14 @@ git config --global -e
 ```bash
 git init
 git add .
-git status
+git status # -s for shorter discription
 git ls-files #show the files that were staged
-git rm FILENAME #unstage the file
-git commit -m "your message"
+git rm $FILENAME #unstage the file --cached for only remove in index(stagin area)
+git mv $SOURCE $DESTINATION #move file in staging area
+git commit -m "$YOUR_MESSAGE"
 git commit #which opens your default editor
-git commit -a -m "your message" #skip the staging area
+git commit -a -m "$YOUR_MESSAGE" #skip the staging area
+git log # --oneline --reverse
+git show $IDENTIFIER
+git show HEAD~$NUM # show git log of $NUM steps backward of HEAD
+./.gitignore
