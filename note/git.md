@@ -2,7 +2,9 @@
 name, email, default editor, line ending
 ### layer that apply to
 `system`: all user
+
 `global`: all repo of current user
+
 `local`: current repo
 ```
 git config --global user.name "Freddy Chuang"
