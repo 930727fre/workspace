@@ -24,14 +24,15 @@ git status # -s for shorter discription
 git ls-files #show the files that were int staging area
 git rm $FILENAME #unstage the file --cached for only remove in index(stagin area)
 git mv $SOURCE $DESTINATION #move file in staging area
-git unstage
 git commit -m "$YOUR_MESSAGE"
 git commit #which opens your default editor
 git commit -a -m "$YOUR_MESSAGE" #skip the staging area
 git log # --oneline --reverse
 git show $IDENTIFIER
 git show HEAD~$NUM # show git log of $NUM steps backward of HEAD
-git bisect # good/ bad/ reset
+git bisect good
+git bisect bad
+git bisect reset
 git checkout
 git checkout $ID $FILENAME #restore $FILENAME from previous commit
 git blame $FILENAME $A,$B #blame $FILENAME from $A to $B line
