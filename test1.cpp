@@ -1,7 +1,6 @@
-#include <iostream>
-#include <cmath>
-using namespace std;
+#include <stdio.h>
 int main(){
-    double x=2.9;
-    cout<<(int)x+1;
+    int n;
+    scanf("%d",&n);
+    printf("%d",n+1);
 }
