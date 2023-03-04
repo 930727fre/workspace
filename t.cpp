@@ -1,6 +1,5 @@
 #include <iostream>
-#include <unistd.h>
-
+using namespace std;
 int main(){
-    execvp("cat","cat","test.1cpp");
+    printf("%lld",-11);
 }
