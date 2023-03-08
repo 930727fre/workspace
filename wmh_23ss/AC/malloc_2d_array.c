@@ -6,8 +6,7 @@
  */
 int **newMatrix(int m, int n)
 {
-    int **matrix;
-    matrix=(int**)malloc(m*sizeof(int*));
+    int **matrix=(int**)malloc(m*sizeof(int*));
     for(int i=0;i<m;i++){
         matrix[i]=(int*)malloc(n*sizeof(int));
     }
