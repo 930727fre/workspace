@@ -1,35 +1,39 @@
 #include <stdio.h>
+int boss[2000],ans;
+void merge(int, int);
 int find(int);
-int arr[1000000],size[1000000];
 int main(){
-    int n,m,a,b,ans=0;
+    int n,m,a,b;
     scanf("%d %d",&n,&m);
+    ans=n;
     for(int i=0;i<n;i++){
-        arr[i]=i;
-        size[i]=1;
+        boss[i]=i;
     }
     for(int i=0;i<m;i++){
         scanf("%d %d",&a,&b);
-        arr[b]=find(a);
-        size[b]=0;
+        a--;
+        b--;
+        merge(a,b);
     }
-    for(int i=0;i<n;i++){
-        ans+=size[i];
-    }
-    for(int i=0;i<n;i++){
-        printf("%d ",size[i]);
-    }
-    printf("\n");
-    printf("%d",ans);
+    printf("%d\n",ans);
 }
 
-int find(int n){
-    if(arr[n]==n){
-        return n;
+int find(int a){
+    if(boss[a]==a){
+        return a;
     }
     else{
-        arr[n]=find(arr[n]);
-        size[n]=0;
-        return arr[n];
+        boss[a]=find(boss[a]);
+        return boss[a];
+    }
+}
+void merge(int a, int b){
+    if(find(a)==find(b)){
+        return;
+    }
+    else{
+        boss[b]=find(a);
+        ans--;
+        return;
     }
 }
