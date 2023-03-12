@@ -29,17 +29,15 @@ int main(){
         if(pid<0){
             exit(EXIT_FAILURE);
         }
-        else{
-            if(pid==0){
-                execvp(command,arg);
-            }
-            else{
-				if ((pid = waitpid(pid, &status, 0)) < 0)
-					printf("waitpid error");
-				printf("## ");
-            }
-
+        else if(pid==0){
+            execvp(command,arg);
         }
+
+        
+        if ((pid = waitpid(pid, &status, 0)) < 0)
+            printf("waitpid error");        
+        printf("## ");
+
     }
 
     exit(EXIT_SUCCESS);

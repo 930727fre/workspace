@@ -1,5 +1,6 @@
 #include "apue.h"
 #include <sys/wait.h>
+#include "error.c"
 
 static void	sig_int(int);		/* our signal-catching function */
 int
