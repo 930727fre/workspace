@@ -1,4 +1,4 @@
-#include <string.h>
+#include <string.h>// commands without output may lead to bug
 #include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,20 +24,25 @@ int main(){
             token=strtok(NULL," ");
         }
         arg[counter]=NULL;
-
-        pid=fork();
-        if(pid<0){
-            exit(EXIT_FAILURE);
-        }
-        else if(pid==0){
-            execvp(command,arg);
-        }
-
         
-        if ((pid = waitpid(pid, &status, 0)) < 0)
-            printf("waitpid error");        
+        if(!strcmp(command,"exit")){
+            exit(0);
+        }
+        else if(!strcmp(command,"cd")){
+            chdir(arg[1]);
+        }
+        else{
+            pid=fork();
+            if(pid<0){
+                exit(EXIT_FAILURE);
+            }
+            else if(pid==0){
+                execvp(command,arg);
+            }
+            if ((pid = waitpid(pid, &status, 0)) < 0)
+                printf("waitpid error\n");            
+        } 
         printf("## ");
-
     }
 
     exit(EXIT_SUCCESS);
