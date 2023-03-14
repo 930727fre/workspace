@@ -25,7 +25,10 @@ int main(){
     }
 
     for(int i=0;i<n;i++){
-        // insertionSort(sortedHead,pop_back(head));
+        insertionSort(sortedHead,pop_back(head));
+    }
+    for(int i=0;i<n;i++){
+        printf("%d\n",pop_back(sortedHead));
     }
     
 }
@@ -64,6 +67,8 @@ void insert(Node* head, int index, int newValue){
         newNode->ptr=NULL;
         newNode->value=head->value;
         head->ptr=newNode;
+        head->value=newValue;
+        return;
 
     }
     for(int i=0;i<index-1;i++){
