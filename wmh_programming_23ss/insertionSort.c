@@ -25,7 +25,7 @@ int main(){
     }
 
     for(int i=0;i<n;i++){
-        insertionSort(sortedHead,pop_back(head));
+        // insertionSort(sortedHead,pop_back(head));
     }
     
 }
