@@ -1,7 +1,6 @@
 #include <stdio.h>
-typedef long long LL;
 int arr[100];
-int ans=1;
+int ans=0;
 int n,e,quota;
 void sort(void);
 
@@ -9,17 +8,21 @@ int main(){
     scanf("%d %d",&n,&e);
     for(int i=0;i<n;i++){
         scanf("%d",&arr[i]);
-        arr[i]=1;
     }
     sort();
-    quota=e;
     for(int i=0;i<n;i++){
-        if(quota>=arr[i]){
-            quota-=arr[i];
+        if(arr[i]<0){
+            continue;
         }
         else{
-            quota=e-arr[i];
             ans++;
+            quota=e-arr[i];
+            for(int j=i+1;j<n;j++){
+                if(quota>=arr[j]){
+                    quota-=arr[j];
+                    arr[j]=-1;
+                }
+            }
         }
     }
     printf("%d",ans);
