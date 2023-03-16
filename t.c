@@ -4,5 +4,6 @@
 int main(){
 	perror("he");
 	exit(0);
+	while(1)
 }
 
