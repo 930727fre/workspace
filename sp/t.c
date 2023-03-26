@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include <unistd.h>
 
-int main(int argc, char* argv[]){
-    for(int i=1;i<argc;i++){
-        printf("%s\n",argv[i]);
-    }
+int main(){
+    char str[2000];
+    scanf("%s",str);
+    printf("%s\n",str);
 }
