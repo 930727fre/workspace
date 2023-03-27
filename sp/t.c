@@ -1,7 +1,11 @@
 #include <stdio.h>
-
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
 int main(){
-    char str[2000];
-    scanf("%s",str);
-    printf("%s\n",str);
+    int fd;
+    char str[100]="hello!\nworld!hi\n";
+    char output[100];
+    fd=open("test.out",O_RDWR|O_CREAT|O_TRUNC,2);
+    close(fd);
 }
