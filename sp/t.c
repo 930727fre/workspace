@@ -3,9 +3,11 @@
 #include <unistd.h>
 #include <string.h>
 int main(){
-    int fd;
-    char str[100]="hello!\nworld!hi\n";
-    char output[100];
-    fd=open("test.out",O_RDWR|O_CREAT|O_TRUNC,2);
+    int fd,fd2,temp;
+    fd=open("test.out",O_RDWR|O_CREAT,0777);
+    printf("%d %d\n",fd,fd2);
+    fd2=dup2(fd,5);
+    printf("%d %d",fd,fd2);
+    close(fd2);
     close(fd);
 }
