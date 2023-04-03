@@ -12,7 +12,8 @@ int cmp(cake a, cake b){
     return a.avg<b.avg;
 }
 int main(){
-    int n,x,ans=0,i;
+    int n,x,i;
+    double ans=0;
     cin>>n>>x;
     for(int i=0;i<n;i++){
         cin>>Cake[i].v>>Cake[i].h;
