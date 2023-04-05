@@ -91,11 +91,15 @@ void HashtableDelete(Hashtable *hashtable, char *key)
     Element *previousElement=NULL;
 
     while(1){
-        if(currentElement->key!=NULL&&!strcmp(currentElement->key,key)){
+        if(!strcmp(currentElement->key,key)){
             if(previousElement!=NULL){
                 previousElement->next=currentElement->next;
             }
+            if((hashtable->table)[MurmurOAAT32(key)]==currentElement){
+                (hashtable->table)[MurmurOAAT32(key)]=NULL;
+            }
             free(currentElement);
+            hashtable->length--;
             return;
         }
         if(currentElement->next!=NULL){
@@ -112,44 +116,31 @@ void HashtableClear(Hashtable *hashtable)
 {
     for(int i=0;i<TABLE_SIZE;i++){
         Element *currentElement=(hashtable->table)[i];
-        Element *nextElement;
-        currentElement->key=NULL;
-        currentElement=currentElement->next;
+        Element *tempElement;
         while(currentElement!=NULL){
-            nextElement=currentElement->next;
-            free(currentElement);
-            currentElement=nextElement;
+            tempElement=currentElement;
+            currentElement=currentElement->next;
+            free(tempElement);
         }
     }
+    hashtable->length=0;
+    return;
 }
 
 ItemArray HashtableGetItems(Hashtable *hashtable)
 {
     ItemArray *array=(ItemArray*)malloc(sizeof(ItemArray));
     int arrayIndex=0;
+    array->items=(Item*)malloc(hashtable->length*sizeof(Item));
     for(int i=0;i<TABLE_SIZE;i++){
         Element *currentElement=(hashtable->table)[i];
-        if(currentElement->key==NULL){
+        if(currentElement==NULL){
             continue;
         }
         while(1){
-            array->length++;
-            if(currentElement->next==NULL){
-                break;
-            }
-            else{
-                currentElement=currentElement->next;
-            }
-        }
-    }
-    array->items=(Item*)malloc(array->length*sizeof(Item));
-    for(int i=0;i<TABLE_SIZE;i++){
-        Element *currentElement=(hashtable->table)[i];
-        if(currentElement->key==NULL){
-            continue;
-        }
-        while(1){
+            (array->items[arrayIndex]).key=(char*)malloc(sizeof(currentElement->key));
             strcpy((array->items[arrayIndex]).key,currentElement->key);
+            array->items[arrayIndex].value=currentElement->value;
             arrayIndex++;
             if(currentElement->next==NULL){
                 break;
@@ -165,11 +156,50 @@ ItemArray HashtableGetItems(Hashtable *hashtable)
 
 Hashtable *mergeHashtable(Hashtable *ht1, Hashtable *ht2)
 {
-    
+    Hashtable *newTable=(Hashtable*)malloc(sizeof(Hashtable));
+    ItemArray array1=HashtableGetItems(ht1);
+    for(int i=0;i<ht1->length;i++){
+        HashtableSet(newTable,array1.items[i].key,array1.items[i].value);
+    }
+    ItemArray array2=HashtableGetItems(ht2);
+    for(int i=0;i<ht2->length;i++){
+        HashtableSet(newTable,array2.items[i].key,array2.items[i].value);
+    }
+
+    return newTable;
 }
 
 int main(){
     Hashtable *table=newHashtable();
     HashtableSet(table,"dog",5);
-    
+    char word[]="egg"; //app 66 bee 29 egg 43
+    HashtableSet(table,"app",6);
+    HashtableSet(table,"bee",7);
+    HashtableSet(table,"bee",8);
+    HashtableDelete(table,"bee");
+    Hashtable *tb=newHashtable();
+    HashtableSet(tb,"app",22);
+    HashtableSet(tb,"cat",7);    
+    // printf("%d\n",HashtableGet(table,"dog"));
+    // printf("%d\n",HashtableGet(table,"app"));
+    // printf("%d\n",HashtableGet(table,"bee"));
+    // printf("%d\n",table->length);
+    // HashtableClear(table);
+    // printf("%d\n",table->length);
+    // printf("%d\n",HashtableGet(table,"egg"));
+    ItemArray array1=HashtableGetItems(table);
+    for(int i=0;i<table->length;i++){
+        printf("%s %d\n",array1.items[i].key,array1.items[i].value);
+    }
+    printf("------\n");
+    ItemArray array2=HashtableGetItems(tb);
+    for(int i=0;i<tb->length;i++){
+        printf("%s %d\n",array2.items[i].key,array2.items[i].value);
+    }    
+    printf("------\n");
+    Hashtable *merged=mergeHashtable(table, tb);
+    ItemArray array3=HashtableGetItems(merged);
+    for(int i=0;i<merged->length;i++){
+        printf("%s %d\n",array3.items[i].key,array3.items[i].value);
+    }   
 }
