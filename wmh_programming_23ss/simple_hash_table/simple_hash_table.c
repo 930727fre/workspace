@@ -17,13 +17,14 @@ unsigned long MurmurOAAT32(char *key)
 Hashtable *newHashtable()
 {
     Hashtable *newTable=(Hashtable*)malloc(sizeof(Hashtable));
-    Element **tableArray;
+    Element **tableArray=(Element**)malloc(TABLE_SIZE*sizeof(Element*));
     newTable->table=tableArray;
     newTable->length=0;
-    tableArray=(Element**)malloc(TABLE_SIZE*sizeof(Element*));
-    for(int i=0;i<TABLE_SIZE;i++){
-        tableArray[i]->key=NULL;
-    }
+    // for(int i=0;i<TABLE_SIZE;i++){
+    //     tableArray[i]->key=NULL;
+    //     tableArray[i]->value=0;
+    //     tableArray[i]->next=NULL;
+    // }
 
    return newTable;
 }
@@ -31,12 +32,21 @@ Hashtable *newHashtable()
 void HashtableSet(Hashtable *hashtable, char *key, int value)
 {
     unsigned long hashValue=MurmurOAAT32(key);
-    Element *currentElement=(hashtable->table)[hashValue];
-
+    Element *currentElement=(hashtable->table)[hashValue]; 
+    if(currentElement==NULL){
+        (hashtable->table)[hashValue]=(Element*)malloc(sizeof(Element));
+        Element *currentElement=(hashtable->table)[hashValue]; 
+        currentElement->key=(char*)malloc(sizeof(key));
+        strcpy(currentElement->key,key);
+        currentElement->next=NULL;
+        currentElement->value=value;
+        hashtable->length++;
+        return;
+    }
     while(1){
-        if(currentElement->key!=NULL&&!strcmp(currentElement->key,key)){
+        if(!strcmp(currentElement->key,key)){
             currentElement->value=value;
-            break;
+            return;
         }
         if(currentElement->next!=NULL){
             currentElement=currentElement->next;
@@ -48,6 +58,8 @@ void HashtableSet(Hashtable *hashtable, char *key, int value)
             strcpy(currentElement->key,key);
             currentElement->next=NULL;
             currentElement->value=value;
+            hashtable->length++;
+            return;
         }
     }
 
@@ -57,9 +69,11 @@ int HashtableGet(Hashtable *hashtable, char *key)
 {
     unsigned long hashValue=MurmurOAAT32(key);
     Element *currentElement=(hashtable->table)[hashValue];
-
+    if(currentElement==NULL){
+        return -9999;
+    }
     while(1){
-        if(currentElement->key!=NULL&&!strcmp(currentElement->key,key)){
+        if(!strcmp(currentElement->key,key)){
             return currentElement->value;
         }
         if(currentElement->next!=NULL){
@@ -154,6 +168,8 @@ Hashtable *mergeHashtable(Hashtable *ht1, Hashtable *ht2)
     
 }
 
-// int main(){
-//     return 0;
-// }
+int main(){
+    Hashtable *table=newHashtable();
+    HashtableSet(table,"dog",5);
+    
+}
