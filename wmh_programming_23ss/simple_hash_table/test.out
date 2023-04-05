@@ -1,0 +1,242 @@
+============================
+Your Status
+HP : 20
+ATK : 5
+============================
+Your enemys
+------------------
+mob: Slime
+HP : 1
+ATK: 0
+------------------
+mob: Zombie
+HP : 20
+ATK: 3
+------------------
+mob: Enderman
+HP : 40
+ATK: 7
+------------------
+mob: Witch
+HP : 26
+ATK: 6
+------------------
+mob: Creeper
+HP : 20
+ATK: 43
+============================
+Round 1!!
+Your Status
+HP : 20
+ATK : 5
+==================
+Enemys Status
+------------------
+mob: Slime
+HP : 1
+------------------
+mob: Zombie
+HP : 20
+------------------
+mob: Enderman
+HP : 40
+------------------
+mob: Witch
+HP : 26
+------------------
+mob: Creeper
+HP : 20
+==================
+Slime took 5 points of damage.
+Slime HP: -4
+Slime dead.
+------------------
+Zombie took 5 points of damage.
+Zombie HP: 15
+You roll a 1.
+You got 3 points of damage by Zombie.
+Your HP: 17
+------------------
+Enderman took 5 points of damage.
+Enderman HP: 35
+You roll a 6. Enderman attacked you but missed.
+------------------
+Witch took 5 points of damage.
+Witch HP: 21
+You roll a 4. Witch attacked you but missed.
+------------------
+Creeper took 5 points of damage.
+Creeper HP: 15
+You roll a 3. Creeper attacked you but missed.
+============================
+Round 2!!
+Your Status
+HP : 17
+ATK : 5
+==================
+Enemys Status
+------------------
+mob: Zombie
+HP : 15
+------------------
+mob: Enderman
+HP : 35
+------------------
+mob: Witch
+HP : 21
+------------------
+mob: Creeper
+HP : 15
+==================
+Zombie took 5 points of damage.
+Zombie HP: 10
+You roll a 3. Zombie attacked you but missed.
+------------------
+Enderman took 5 points of damage.
+Enderman HP: 30
+You roll a 3. Enderman attacked you but missed.
+------------------
+Witch took 5 points of damage.
+Witch HP: 16
+You roll a 1.
+You got 6 points of damage by Witch.
+Your HP: 11
+------------------
+Creeper took 5 points of damage.
+Creeper HP: 10
+You roll a 3. Creeper attacked you but missed.
+============================
+Round 3!!
+Your Status
+HP : 11
+ATK : 5
+==================
+Enemys Status
+------------------
+mob: Zombie
+HP : 10
+------------------
+mob: Enderman
+HP : 30
+------------------
+mob: Witch
+HP : 16
+------------------
+mob: Creeper
+HP : 10
+==================
+Zombie took 5 points of damage.
+Zombie HP: 5
+You roll a 4. Zombie attacked you but missed.
+------------------
+Enderman took 5 points of damage.
+Enderman HP: 25
+You roll a 3. Enderman attacked you but missed.
+------------------
+Witch took 5 points of damage.
+Witch HP: 11
+You roll a 2. Witch attacked you but missed.
+------------------
+Creeper took 5 points of damage.
+Creeper HP: 5
+You roll a 3. Creeper attacked you but missed.
+============================
+Round 4!!
+Your Status
+HP : 11
+ATK : 5
+==================
+Enemys Status
+------------------
+mob: Zombie
+HP : 5
+------------------
+mob: Enderman
+HP : 25
+------------------
+mob: Witch
+HP : 11
+------------------
+mob: Creeper
+HP : 5
+==================
+Zombie took 5 points of damage.
+Zombie HP: 0
+Zombie dead.
+------------------
+Enderman took 5 points of damage.
+Enderman HP: 20
+You roll a 3. Enderman attacked you but missed.
+------------------
+Witch took 5 points of damage.
+Witch HP: 6
+You roll a 2. Witch attacked you but missed.
+------------------
+Creeper took 5 points of damage.
+Creeper HP: 0
+Creeper dead.
+============================
+Round 5!!
+Your Status
+HP : 11
+ATK : 5
+==================
+Enemys Status
+------------------
+mob: Enderman
+HP : 20
+------------------
+mob: Witch
+HP : 6
+==================
+Enderman took 5 points of damage.
+Enderman HP: 15
+You roll a 2. Enderman attacked you but missed.
+------------------
+Witch took 5 points of damage.
+Witch HP: 1
+You roll a 1.
+You got 6 points of damage by Witch.
+Your HP: 5
+============================
+Round 6!!
+Your Status
+HP : 5
+ATK : 5
+==================
+Enemys Status
+------------------
+mob: Enderman
+HP : 15
+------------------
+mob: Witch
+HP : 1
+==================
+Enderman took 5 points of damage.
+Enderman HP: 10
+You roll a 6. Enderman attacked you but missed.
+------------------
+Witch took 5 points of damage.
+Witch HP: -4
+Witch dead.
+============================
+Round 7!!
+Your Status
+HP : 5
+ATK : 5
+==================
+Enemys Status
+------------------
+mob: Enderman
+HP : 10
+==================
+Enderman took 5 points of damage.
+Enderman HP: 5
+You roll a 1.
+You got 7 points of damage by Enderman.
+Your HP: -2
+You are dead.
+Game Over
+============================
+You lose
+Your HP: -2
