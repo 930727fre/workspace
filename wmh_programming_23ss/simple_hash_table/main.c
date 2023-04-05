@@ -3,8 +3,6 @@
 #include <time.h>
 #include <string.h>
 #include "simple_hash_table.h"
-#include "simple_hash_table.c"
-
 
 int dice(int max)
 {
