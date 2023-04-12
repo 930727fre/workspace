@@ -62,58 +62,82 @@ void printCardStack(Card *cardStack)
 
 void shuffleCardStack(Card **cardStack)
 {   
-    Card *b=(Card*)malloc(sizeof(Card*));
-    Card *a_prev=(Card*)malloc(sizeof(Card*));
-    Card *b_prev=(Card*)malloc(sizeof(Card*));
-    Card *a=(Card*)malloc(sizeof(Card*));
-    Card *temp=(Card*)malloc(sizeof(Card*));
-    a=(*cardStack);
-    a_prev=NULL;
-    b_prev=NULL;
-    for(int i=1;i<=52;i++){
-        int random_num = rand()%52+1;
-        printf("%d\n",random_num);
-        while(i==random_num){
-            random_num = rand()%52+1;
+    Card *aPrev, *aNext, *bPrev, *bNext, *currentCard, *aCard, *bCard;
+    int a,b;
+    for(int i=0;i<52;i++){
+        aPrev=NULL;
+        bPrev=NULL;
+        currentCard=*cardStack;
+        a=rand()%52+1;
+        b=rand()%52+1;
+        while(a==b){
+            b=rand()%52+1;
         }
-        b=(*cardStack);
-        for(int i=0;i<random_num;i++){
-            b_prev=b;
-            b=b->next;
+        for(int j=1;a||b;j++){
+            if(a==j){
+                a=0;
+                aCard=currentCard;
+                aNext=currentCard->next;
+            }
+            else if(b==j){
+                b=0;
+                bCard=currentCard;
+                bNext=currentCard->next;
+            }
+            if(a){
+                aPrev=currentCard;
+            }
+            if(b){
+                bPrev=currentCard;
+            }
+            if((a||b)&&currentCard->next==NULL){
+                printf("unable to find\n");
+                return;
+            }
+            currentCard=currentCard->next;
         }
-        if(a_prev!=NULL){
-            a_prev->next=b;
+        if(*cardStack==aCard){
+            cardStack=&bCard;
         }
-        if(b_prev!=NULL){
-            b_prev->next=a;
+        else{
+            aPrev->next=bCard;
         }
-        temp->next=a->next;
-        a->next=b->next;
-        b->next=temp->next;
-        a_prev=b;
-        a=b->next;
+        if(*cardStack==bCard){
+            cardStack=&aCard;
+        }
+        else{
+            bPrev->next=aCard;
+        }
+        aCard->next=bNext;
+        bCard->next=aNext;
+        printf("%d %c\n",aCard->face,aCard->suit);
+        printf("%d %c\n",bCard->face,bCard->suit);
+        printCardStack(*cardStack);
     }
 
 }
 
 void freeCardStack(Card **cardStack)
 {   
-    if((*cardStack)->next==NULL){
-        free(*cardStack);
-        return;
+    Card *currentCard=*cardStack; 
+    Card *tempCard;
+    while(currentCard!=NULL){
+        tempCard=currentCard;
+        currentCard=currentCard->next;
+        free(tempCard);
     }
-    else{
-        freeCardStack(&((*cardStack)->next));
-        free(*cardStack);
-    }
+    return;
 }
 
 int main()
 {
     srand(time(NULL));
     Card *cardStack = newCardStack();
-    printCardStack(cardStack);
+    // printCardStack(cardStack);
+    printf("----------------\n");
     shuffleCardStack(&cardStack);
-    printCardStack(cardStack);
+    // printCardStack(cardStack);
     freeCardStack(&cardStack);
 }
+
+
