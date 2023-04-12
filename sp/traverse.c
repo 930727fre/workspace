@@ -71,7 +71,11 @@ void traverse(char* path){
 int main(){
     traverse("/");
     char words[7][100]={"regular file","directory","Character special file","Block special file","FIFO","socket","symbolic link"};
+    long long int sum=0;
     for(int i=0;i<7;i++){
-        printf("%s:%lld\n",words[i],counter[i]);
+        sum+=counter[i];
+    }
+    for(int i=0;i<7;i++){
+        printf("%s:%lld %f%%\n",words[i],counter[i],(float)100*counter[i]/sum);
     }
 }
