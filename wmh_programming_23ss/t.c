@@ -2,5 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 int main(){
-    printf("%d",strcmp("apple","apple"));
+    char a;
+    printf("%d",a) ;
 }
