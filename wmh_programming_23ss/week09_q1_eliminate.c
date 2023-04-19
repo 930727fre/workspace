@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int ans=0;
 typedef struct stack
 {
     struct stack *next;
@@ -29,13 +28,12 @@ void push(Stack* cardStack, char val){
 
 }
 
-void eliminate(Stack* cardStack){
+Stack* eliminate(Stack* cardStack){
     Stack *current, *temp;
     current=cardStack->next;
     while (current->next!=NULL)
     {   
         if(current->val==current->next->val){
-            ans++;
             if(current->prev!=NULL){
                 current->prev->next=current->next->next;
                 if(current->next->next!=NULL){
@@ -51,8 +49,9 @@ void eliminate(Stack* cardStack){
                 free(current->next);
                 free(current);
                 current=temp;
+                cardStack=current;
                 if(current==NULL){
-                    return;
+                    return cardStack;
                 }
                 current->prev=NULL;
             }
@@ -61,20 +60,27 @@ void eliminate(Stack* cardStack){
             current=current->next;
         }
     }
-    
+    temp=cardStack->next;
+    free(cardStack);
+    return temp;
 }
 
 int main(){
     char str[1000000];
+    int ans=0;
     scanf("%s",str);
-    Stack* st=(Stack*)malloc(sizeof(Stack));
+    Stack* st=(Stack*)malloc(sizeof(Stack)), *temp;
     for(int i=0;i<strlen(str);i++){
         push(st,str[i]);
     }
-    eliminate(st);
-    free(st);
+    st=eliminate(st);
+    while (st!=NULL){
+        ans++;
+        temp=st;
+        st=st->next;
+        free(temp);
+    }
     printf("%d\n",ans);
-
     
 }
 //abbaccdeffed
