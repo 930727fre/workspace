@@ -1,86 +1,90 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-
-typedef struct stack
-{
-    struct stack *next;
-    struct stack *prev;
-    char val;
+#include <stdlib.h>
+typedef struct stack{
+    int val;
+    struct stack* prev;
+    struct stack* next;
 }Stack;
 
-void push(Stack* cardStack, char val){
-    if(cardStack->next==NULL){
-        cardStack->next=(Stack*)malloc(sizeof(Stack));
-        cardStack->next->prev=NULL;
-        cardStack->next->val=val;
-        return;
+int ans;
+void push(Stack* st, char word){
+    if(st->next==NULL){
+        st->next=(Stack*)malloc(sizeof(Stack));
+        st->next->val=word;
+        st->next->prev=NULL;
+        st->next->next=NULL;
     }
     else{
-        while(cardStack->next!=NULL){
-            cardStack=cardStack->next;
+        while(st->next!=NULL){
+            st=st->next;
         }
-        cardStack->next=(Stack*)malloc(sizeof(Stack));
-        cardStack->next->prev=cardStack;
-        cardStack->next->val=val;
-        return;
+        st->next=(Stack*)malloc(sizeof(Stack));
+        st->next->val=word;
+        st->next->prev=st;
+        st->next->next=NULL;
     }
-
 }
 
-Stack* eliminate(Stack* cardStack){
-    Stack *current, *temp;
-    current=cardStack->next;
-    while (current->next!=NULL)
-    {   
-        if(current->val==current->next->val){
-            if(current->prev!=NULL){
-                current->prev->next=current->next->next;
-                if(current->next->next!=NULL){
-                    current->next->next->prev=current->prev;
+void eliminate(Stack* origin){
+    Stack *temp, *st;
+    st=origin->next;
+
+    while(st->next!=NULL){
+
+        if(st->val==st->next->val){
+            if(st->prev==NULL){
+                temp=st;
+                if(st->next->next==NULL){
+                    origin->next=NULL;
+                    ans-=2;
+                    return;
                 }
-                temp=current->prev;
-                free(current->next);
-                free(current);
-                current=temp;
+                else{
+                    st=st->next->next;
+                    st->prev=NULL;
+                    origin->next=st;
+                    free(temp->next);
+                    free(temp);
+                }
             }
             else{
-                temp=current->next->next;
-                free(current->next);
-                free(current);
-                current=temp;
-                cardStack=current;
-                if(current==NULL){
-                    return cardStack;
+                temp=st;
+                st=st->prev;
+                st->next=st->next->next->next;
+                if(st->next!=NULL){
+                    st->next->prev=st;
                 }
-                current->prev=NULL;
+                free(temp->next);
+                free(temp);
             }
+            ans-=2;
         }
         else{
-            current=current->next;
+            st=st->next;
         }
     }
-    temp=cardStack->next;
-    free(cardStack);
-    return temp;
 }
 
+void freeStack(Stack* st){
+    if(st->next!=NULL){
+        freeStack(st->next);
+    }
+    free(st);
+
+}
+
+
 int main(){
-    char str[1000000];
-    int ans=0;
+    char str[200100];
+    Stack* st=(Stack*)malloc(sizeof(Stack));
     scanf("%s",str);
-    Stack* st=(Stack*)malloc(sizeof(Stack)), *temp;
     for(int i=0;i<strlen(str);i++){
         push(st,str[i]);
     }
-    st=eliminate(st);
-    while (st!=NULL){
-        ans++;
-        temp=st;
-        st=st->next;
-        free(temp);
-    }
+    ans=strlen(str);
+    eliminate(st);
+    freeStack(st);
     printf("%d\n",ans);
-    
+
 }
-//abbaccdeffed
