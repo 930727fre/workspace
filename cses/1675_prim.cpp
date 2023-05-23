@@ -8,6 +8,7 @@ using pii=pair<LL, LL>;
 vector<pii> vec[100005];
 priority_queue<pii,vector<pii>,greater<pii>> pq;
 bool vis[100005];
+
 int main(){
     LL n,m,a,b,c=0,src,counter=0,cost=0;
     cin>>n>>m;
