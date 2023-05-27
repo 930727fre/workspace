@@ -1,5 +1,10 @@
 #include <stdio.h>
 
-int main(){
-    printf("%f\n",(float)(long long int)3/(long long int)5);
+int main() {
+    char buffer[BUFSIZ];
+    setvbuf(stdout, buffer, _IOLBF, BUFSIZ);
+
+    // Rest of the code...
+
+    return 0;
 }
