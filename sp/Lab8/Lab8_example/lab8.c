@@ -25,12 +25,7 @@ int main()
 		}
 		else if(pid[i]==0){
 			for(int j=0;j<week;j++){
-				if(j+1<10){
-					sprintf(str,"%d-0%d.txt",i+1,j+1);
-				}
-				else{
-					sprintf(str,"%d-%d.txt",i+1,j+1);					
-				}
+				sprintf(str, "%d-%02d.txt", i+1, j+1);
 				
 				FILE*  fp=fopen(str,"r");
 				for(int k=0;k<day;k++){
@@ -39,13 +34,14 @@ int main()
 						fscanf(fp, "%d",&temp);
 						total_sum+=temp;
 					}
-					printf("%d\n",total_sum);
+					// printf("%d\n",total_sum);
 					WAIT_PARENT();
 					accumulation(total_sum);
 					TELL_PARENT(getppid());
 				}
 				fclose(fp);
 			}
+			exit(0);
 		}
 		else{
 			for(int j=0;j<week;j++){
@@ -53,10 +49,13 @@ int main()
 					TELL_CHILD(pid[i]);
 					WAIT_CHILD();
 				}
-			}
-
+			}	
 		}			
 	}
+	
+	// for(int i=0;i<year;i++){
+	
+	// }
 
 	/**********************************************************/
 
