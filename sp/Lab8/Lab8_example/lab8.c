@@ -24,7 +24,6 @@ int main()
 			err_sys("fork error");
 		}
 		else if(pid[i]==0){
-			total_sum=0;
 			for(int j=0;j<week;j++){
 				if(j+1<10){
 					sprintf(str,"%d-0%d.txt",i+1,j+1);
@@ -35,19 +34,28 @@ int main()
 				
 				FILE*  fp=fopen(str,"r");
 				for(int k=0;k<day;k++){
+					total_sum=0;
 					for(int l=0;l<96;l++){
 						fscanf(fp, "%d",&temp);
 						total_sum+=temp;
 					}
+					printf("%d\n",total_sum);
+					WAIT_PARENT();
+					accumulation(total_sum);
+					TELL_PARENT(getppid());
 				}
 				fclose(fp);
 			}
-			accumulation(total_sum);
-			TELL_PARENT(getppid());
 		}
 		else{
-			WAIT_CHILD();
-		}
+			for(int j=0;j<week;j++){
+				for(int k=0;k<day;k++){
+					TELL_CHILD(pid[i]);
+					WAIT_CHILD();
+				}
+			}
+
+		}			
 	}
 
 	/**********************************************************/
