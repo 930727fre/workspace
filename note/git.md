@@ -57,16 +57,16 @@ git reset #u pdating your branch, moving the tip in order to add or remove commi
 ```
 
 ## git clean
--n or --dry-run: Performs a dry run and shows a list of files and directories that would be removed without actually deleting anything. This is useful to preview the files that will be affected.
+`-n` or `--dry-run`: Performs a dry run and shows a list of files and directories that would be removed without actually deleting anything. This is useful to preview the files that will be affected.
 
--f or --force: Forces the deletion of untracked files and directories without prompting for confirmation. Use this option with caution as it permanently removes files.
+`-f` or `--force`: Forces the deletion of untracked files and directories without prompting for confirmation. Use this option with caution as it permanently removes files.
 
--d or --directory: Deletes untracked directories in addition to untracked files. By default, git clean does not remove untracked directories.
+`-d` or `--directory`: Deletes untracked directories in addition to untracked files. By default, git clean does not remove untracked directories.
 
--x or --exclude: Specifies patterns for files and directories to be excluded from cleaning. You can provide multiple patterns by repeating the option.
+`-x` or `--exclude`: Specifies patterns for files and directories to be excluded from cleaning. You can provide multiple patterns by repeating the option.
 
--X or --exclude-standard: Adds the standard Git ignore rules to the exclusion list, so files and directories matching those patterns will be excluded from cleaning.
+`-X` or `--exclude-standard`: Adds the standard Git ignore rules to the exclusion list, so files and directories matching those patterns will be excluded from cleaning.
 
--i or --interactive: Provides an interactive mode where you can selectively choose which files and directories to clean.
+`-i` or `--interactive`: Provides an interactive mode where you can selectively choose which files and directories to clean.
 
 It's important to exercise caution when using git clean, especially with the -f option, as it permanently deletes untracked files and directories. Review the list of files to be deleted using git clean -n before running the command to ensure you are removing the intended files.
