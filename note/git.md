@@ -54,7 +54,7 @@ git stash drop $STASH_INDEX
 git restore #restoring files in the working tree from either the index or another commit. This command does not update your branch. The command can also be used to restore files in the index from another commit.
 git reset #u pdating your branch, moving the tip in order to add or remove commits from the branch. This operation changes the commit history. git reset can also be used to restore the index, overlapping with git restore.
 
-
+```
 
 ## git clean
 -n or --dry-run: Performs a dry run and shows a list of files and directories that would be removed without actually deleting anything. This is useful to preview the files that will be affected.
