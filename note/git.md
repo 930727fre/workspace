@@ -70,3 +70,4 @@ git reset #u pdating your branch, moving the tip in order to add or remove commi
 `-i` or `--interactive`: Provides an interactive mode where you can selectively choose which files and directories to clean.
 
 It's important to exercise caution when using git clean, especially with the -f option, as it permanently deletes untracked files and directories. Review the list of files to be deleted using git clean -n before running the command to ensure you are removing the intended files.
+
