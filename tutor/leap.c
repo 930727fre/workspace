@@ -2,19 +2,20 @@
 
 int main(){
     int i;
-    scanf("%d",&i);
-    if(i%4 !=0){
-        printf("No\n");
-    }
-    else
-        if(i%100!=0){
+    while(1){
+        scanf("%d",&i);
+        if(i%4 !=0){
             printf("No\n");
         }
-        else
-            if(i%400==0){
-                printf("No\n");
-
-        }
+        else 
+            if(i%100!=0){
+                printf("Yes\n");
+            }
             else
-            printf("Yes\n");
-}
+                if(i%400 == 0){
+                printf("Yes\n");
+                }
+                else
+                printf("No\n");
+            }
+    }
