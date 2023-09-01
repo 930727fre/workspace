@@ -1,10 +1,20 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 int main(){
-    long long temp=1;
-    for(int i=0;i<10;i++){
-        printf("%lld\n",temp);
-        temp*=36;
+    for(int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            if(i!=j)
+            {
+                if(arr[i]==temp[j]){
+                    b++;
+                    continue;
+                }
+            }
+        }
     }
+    
 }
-`
+
+1234
+2567
