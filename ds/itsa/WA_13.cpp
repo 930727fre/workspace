@@ -45,8 +45,8 @@ void split(vector<card*>& v, string str, string pattern){
     while(end!=string::npos){
         if(end!=begin){//preventing consecutive occuence of pattern
             card* ptr=new card();
-            ptr->suit=str.substr(begin, end)[0];
-            ptr->num=stoi(&str.substr(begin, end)[1]);
+            ptr->suit=str.substr(begin, end-begin)[0];
+            ptr->num=stoi(&str.substr(begin, end-begin)[1]);
             v.push_back(ptr);
         }
         begin=end+pattern.size();
