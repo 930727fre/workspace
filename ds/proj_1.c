@@ -59,10 +59,10 @@ void bfs(int src[1][2], int dst[1][2], int maze[1000][1000]){
         printf("\n");
     }
     queue *front, *last, *current;
-    push_back(src[0][0], src[0][1], &front, &last, maze);
+    push_back(src[0][1], src[0][0], &front, &last, maze);
     while(!empty(front)){
         current=front;
-        if(current->x==dst[0][0]&&current->y==dst[0][1]){ //if arrive the destination
+        if(current->x==dst[0][1]&&current->y==dst[0][0]){ //if arrive the destination
             printf("arrived %d %d\n", current->x, current->y);
             clear(front);
             return;
