@@ -100,7 +100,7 @@ void bfs(int (*src), int (*src2), int (*dst)[2], int maze[1000][1000]){
         }
     }
     queue *front=NULL, *last=NULL, *current=NULL;
-    push_back(src[0], src[1], &front, &last, NULL, maze);
+    push_back(src[0], src[1], &front, &last, NULL, visited);
     current=front;
     while(!empty(current)){
         if(current->x==dst[0][0]&&current->y==dst[0][1]){ //if arrive the destination
