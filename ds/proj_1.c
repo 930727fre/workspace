@@ -86,7 +86,7 @@ void output(queue* current, int* src2, int (*maze)[1000]){
     if(current->prev!=NULL){
         output(current->prev, src2, maze);
         sync(src2, current->x-current->prev->x, current->y-current->prev->y, maze);
-        printf("%d ",go(current->x,current->y,current->prev->x, current->prev->y));
+        printf("%d",go(current->x,current->y,current->prev->x, current->prev->y));
         return;
     }
     return;
@@ -117,7 +117,7 @@ void bfs(int (*src), int (*src2), int (*dst)[2], int maze[1000][1000]){
             dst[1][1]=-1;
             output(current, src2, maze);
             // printf("\n");
-            return;            
+            return;
         }
         else{
             if(maze[current->x+1][current->y]!=1&&visited[current->x+1][current->y]!=1){
@@ -145,13 +145,7 @@ int main(){
         for(int j=0;j<n;j++){
             scanf("%d",&maze[j][i]); //input the content of maze
         }
-    }
-    // for(int i=n-1;i>=0;i--){
-    //     for(int j=0;j<n;j++){
-    //         printf("%d ",maze[j][i]); //input the content of maze
-    //     }
-    //     printf("\n");
-    // }    
+    } 
     for(int i=0;i<2;i++){
         scanf("%d %d",&src[i][0],&src[i][1]); //input the source
     }
