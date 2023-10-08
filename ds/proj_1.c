@@ -9,7 +9,7 @@ typedef struct Queue{
     int y;
 }queue;
 
-void pop(queue** current){ 
+void pop(queue** current){ // pop the queue
     *current=(*current)->next;
 }
 
@@ -22,7 +22,7 @@ void push_back(int x, int y, queue** front, queue** last, queue** current, int (
         (*front)->prev=NULL;
         *last=*front;
     }
-    else{
+    else{ //if the queue is not empty, push_back data
         (*last)->next=malloc(sizeof(queue));
         (*last)->next->prev=*current;
         *last=(*last)->next;
@@ -45,18 +45,18 @@ bool empty(queue* front){ // check if the queue is empty
 void clear(queue* front){ // free the remaining space
     queue* temp;
     while(front!=NULL){
-        temp=front->next;      
+        temp=front->next;
         free(front);
         front=temp;
     }
 }
 
-void sync(int *src2, int deltaX,int deltaY,int (*maze)[1000]){
-    if(src2[0]==-1&&src2[1]==-1){
+void sync(int *src2, int deltaX,int deltaY,int (*maze)[1000]){ // synchronize another node
+    if(src2[0]==-1&&src2[1]==-1){ // if we doing second bfs, return
         return;
     }
     else{
-        if(maze[src2[0]+deltaX][src2[1]+deltaY]==0){
+        if(maze[src2[0]+deltaX][src2[1]+deltaY]==0){ //move another node
             src2[0]+=deltaX;
             src2[1]+=deltaY;
             return;
@@ -64,7 +64,7 @@ void sync(int *src2, int deltaX,int deltaY,int (*maze)[1000]){
     }
 }
 
-int go(int a, int b, int c, int d){
+int go(int a, int b, int c, int d){// return the return value of 0123
     if(a-c==1){
         return 1;
     }
@@ -82,7 +82,7 @@ int go(int a, int b, int c, int d){
     }
 }
 
-void output(queue* current, int* src2, int (*maze)[1000]){
+void output(queue* current, int* src2, int (*maze)[1000]){ // output the movement by recursion
     if(current->prev!=NULL){
         output(current->prev, src2, maze);
         sync(src2, current->x-current->prev->x, current->y-current->prev->y, maze);
@@ -96,11 +96,11 @@ void bfs(int (*src), int (*src2), int (*dst)[2], int maze[1000][1000]){
     int visited[1000][1000];
     for(int i=0;i<1000;i++){
         for(int j=0;j<1000;j++){
-            visited[i][j]=0;
+            visited[i][j]=0; // initialize the visited array
         }
     }
     queue *front=NULL, *last=NULL, *current=NULL;
-    push_back(src[0], src[1], &front, &last, NULL, visited);
+    push_back(src[0], src[1], &front, &last, NULL, visited);// put the starting point
     current=front;
     while(!empty(current)){
         if(current->x==dst[0][0]&&current->y==dst[0][1]){ //if arrive the destination
@@ -108,32 +108,34 @@ void bfs(int (*src), int (*src2), int (*dst)[2], int maze[1000][1000]){
             dst[0][0]=-1;
             dst[0][1]=-1;
             output(current, src2, maze);
+            clear(front);// free all the memory 
             // printf("\n");
             return;
         }
-        else if(current->x==dst[1][0]&&current->y==dst[1][1]){
+        else if(current->x==dst[1][0]&&current->y==dst[1][1]){//if arrive another destination
             // printf("arrive %d %d\n",current->x, current->y);
             dst[1][0]=-1;
             dst[1][1]=-1;
             output(current, src2, maze);
+            clear(front);// free all the memory 
             // printf("\n");
             return;
         }
         else{
-            if(maze[current->x+1][current->y]!=1&&visited[current->x+1][current->y]!=1){
+            if(maze[current->x+1][current->y]!=1&&visited[current->x+1][current->y]!=1){// go right
                 push_back(current->x+1, current->y, &front, &last, &current, visited);
             }
-            if(maze[current->x-1][current->y]!=1&&visited[current->x-1][current->y]!=1){
+            if(maze[current->x-1][current->y]!=1&&visited[current->x-1][current->y]!=1){// go left
                 push_back(current->x-1, current->y, &front, &last, &current, visited);
             }
-            if(maze[current->x][current->y+1]!=1&&visited[current->x][current->y+1]!=1){
+            if(maze[current->x][current->y+1]!=1&&visited[current->x][current->y+1]!=1){// go up
                 push_back(current->x, current->y+1, &front, &last, &current, visited);
             }
-            if(maze[current->x][current->y-1]!=1&&visited[current->x][current->y-1]!=1){
+            if(maze[current->x][current->y-1]!=1&&visited[current->x][current->y-1]!=1){// go down
                 push_back(current->x, current->y-1, &front, &last, &current, visited);
             }
         }
-        pop(&current);
+        pop(&current); // pop the node
     }
 }
 
