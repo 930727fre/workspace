@@ -45,24 +45,21 @@ void pop(queue** q){
 }
 
 int skipCount(int i){
-    int count=0, current=old[i], dest=new[i];
+    int count=0, current=i, dest=new[i];
     while(old[dest]==-1&&dest!=n-1){
         dest=new[dest];
     }
     printf("dest %d\n",dest);
-    while(current!=dest){
-        printf("current %d\n",current);
+    do{
         if(current==-1){
             return -1;
         }
-        else if(current==dest){
-            return count;
-        }
         current=old[current];
-        if(old[current]!=-1&&new[current]==-1){
+        if(old[current]!=-1&&new[current]!=-1&&current!=dest){
+            printf("current %d\n",current);
             count++;
         }
-    }
+    }while(current!=dest);
     return count;
 }
 
@@ -133,8 +130,11 @@ int main(){
     }
     push(ans,-1);
     roundCounter+=1;
-    int temp=3;
-    printf("skip v%d %d\n",temp,skipCount(temp));
+    for(int i=0;i<n;i++){
+        if(new[i]!=-1&&old[i]!=-1){
+            printf("skip v%d %d\n",i,skipCount(i));
+        }
+    }
     printf("%d\n", roundCounter);
     for(int i=0;i<roundCounter;i++){
         while(1){
