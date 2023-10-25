@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 int *new, *old, *current, *updated, *unionSet;
-int updateCounter=0, roundCounter=0;
+int updateCounter=0, roundCounter=1, operation=0, n;
 typedef struct Queue{
     struct Queue *next;
     int n;
 }queue;
 queue** q;
+queue** ans;
 
 
 void push(queue** q, int value){
@@ -22,7 +24,7 @@ void push(queue** q, int value){
 
 int top(queue** q){
     if((*q)->next==NULL){
-        return -1;
+        return INT_MIN;
     }
     else{
         return (*q)->next->n;
@@ -35,13 +37,33 @@ void pop(queue** q){
         return;
     }
     else{
-        temp=*q;
-        while(temp->next->next!=NULL){
-            temp=temp->next;
-        }
-        free(temp->next);
-        temp->next=NULL;
+        temp=(*q)->next;
+        (*q)->next=(*q)->next->next;
+        free(temp);
+        return;
     }
+}
+
+int skipCount(int i){
+    int count=0, current=old[i], dest=new[i];
+    while(old[dest]==-1&&dest!=n-1){
+        dest=new[dest];
+    }
+    printf("dest %d\n",dest);
+    while(current!=dest){
+        printf("current %d\n",current);
+        if(current==-1){
+            return -1;
+        }
+        else if(current==dest){
+            return count;
+        }
+        current=old[current];
+        if(old[current]!=-1&&new[current]==-1){
+            count++;
+        }
+    }
+    return count;
 }
 
 int dsuFind(int a){
@@ -61,7 +83,6 @@ void dsuUnion(int a, int b){
 }
 
 int main(){
-    int n;
     scanf("%d",&n);
     new=(int*)calloc(n,sizeof(int));
     old=(int*)calloc(n,sizeof(int));
@@ -71,6 +92,9 @@ int main(){
     q=(queue**)malloc(sizeof(queue*));
     *q=(queue*)malloc(sizeof(queue));
     (*q)->next=NULL;
+    ans=(queue**)malloc(sizeof(queue*));
+    *ans=(queue*)malloc(sizeof(queue));
+    (*ans)->next=NULL;    
 
     for(int i=0;i<n;i++){// initialize union set
         unionSet[i]=i;
@@ -80,5 +104,57 @@ int main(){
     }
     for(int i=0;i<n;i++){
         scanf("%d",&new[i]);
+    }
+
+    push(ans,-1); // the output should start with inital state
+    for(int i=0;i<n;i++){
+        if(new[i]!=-1&&old[i]==-1){
+            push(ans,i);
+        }
+        if(new[i]!=old[i]){
+            operation++;
+        }
+    }
+    push(ans,-1);
+    roundCounter+=1;
+
+    // push(ans,0);
+    // push(ans,-1);    
+    // push(ans,1);
+    // push(ans,2);        
+    // push(ans,-1);
+    // push(ans,3);    
+    // push(ans,-1);    
+    // roundCounter+=3;
+    for(int i=0;i<n;i++){
+        if(old[i]!=-1&&new[i]==-1){
+            push(ans,i);
+        }
+    }
+    push(ans,-1);
+    roundCounter+=1;
+    int temp=3;
+    printf("skip v%d %d\n",temp,skipCount(temp));
+    printf("%d\n", roundCounter);
+    for(int i=0;i<roundCounter;i++){
+        while(1){
+            int temp=top(ans);
+            pop(ans);
+            if(temp==-1){
+                break;
+            }
+            else{
+                old[temp]=new[temp];
+            }
+        }
+        for(int j=0;j<n;j++){
+            printf("%d",old[j]);
+            if(j!=n-1){
+                printf(" ");
+            }
+        }
+        if(i!=roundCounter-1){
+            printf("\n");
+        }
     }
 }
