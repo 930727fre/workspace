@@ -108,6 +108,7 @@ void dsuUnion(int a, int b){
 void addShortcut(int node){
     push(shortcut, node);
     updated[node]=1;
+    push(ans, node);
 }
 
 void pruneFunction(void){
@@ -218,17 +219,17 @@ int main(){
     // roundCounter++;
     // pruneFunction();
 
-    addShortcut(0);
-    push(ans, -1);
-    updateCounter++;
-    roundCounter++;
-    pruneFunction();
+    // addShortcut(0);
+    // push(ans, -1);
+    // updateCounter++;
+    // roundCounter++;
+    // pruneFunction();
 
-    addShortcut(3);
-    push(ans, -1);
-    updateCounter++;
-    roundCounter++;
-    pruneFunction();        
+    // addShortcut(3);
+    // push(ans, -1);
+    // updateCounter++;
+    // roundCounter++;
+    // pruneFunction();        
 
     temp=0;
     for(int i=0;i<n;i++){
@@ -243,30 +244,30 @@ int main(){
     if(temp==1){ // this flag checks if there's any node pushed to ans, if so, then roundCounter++
         push(ans,-1);
         roundCounter++;
-    }    
+    }
 
     checkUpdated();
 
     printf("updateCounter: %d\noperation: %d\nroundCounter: %d\n", updateCounter, operation, roundCounter);
-    // for(int i=0;i<roundCounter;i++){
-    //     while(1){
-    //         int temp=top(ans);
-    //         pop(ans);
-    //         if(temp==-1){
-    //             break;
-    //         }
-    //         else{
-    //             old[temp]=new[temp];
-    //         }
-    //     }
-    //     for(int j=0;j<n;j++){
-    //         printf("%d",old[j]);
-    //         if(j!=n-1){
-    //             printf(" ");
-    //         }
-    //     }
-    //     if(i!=roundCounter-1){
-    //         printf("\n");
-    //     }
-    // }
+    for(int i=0;i<roundCounter;i++){
+        while(1){
+            int temp=top(ans);
+            pop(ans);
+            if(temp==-1){
+                break;
+            }
+            else{
+                old[temp]=new[temp];
+            }
+        }
+        for(int j=0;j<n;j++){
+            printf("%d",old[j]);
+            if(j!=n-1){
+                printf(" ");
+            }
+        }
+        if(i!=roundCounter-1){
+            printf("\n");
+        }
+    }
 }
