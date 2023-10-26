@@ -115,7 +115,6 @@ void pruneFunction(void){
         int current=top(shortcut);
         pop(shortcut);
         int dest=findDestination(new[current]);
-        printf("dest %d\n",dest);
         if(skipCount(current)==-1){
             updated[current]=1;
             push(ans, current);
@@ -130,6 +129,9 @@ void pruneFunction(void){
             }
         }
     }
+    if(isEmpty(prune)){ //no need to add roundCounter
+        return;
+    }
     while(!isEmpty(prune)){
         int temp=top(prune);
         pop(prune);
@@ -138,12 +140,15 @@ void pruneFunction(void){
         printf("pruned %d\n",temp);
         updateCounter++;
     }
+    push(ans, -1);
+    roundCounter++;    
 }
 
 void checkUpdated(void){
     for(int i=0;i<n;i++){
         printf("%d ", updated[i]);
-    }    
+    }
+    printf("\n");
 }
 
 int main(){
@@ -174,48 +179,75 @@ int main(){
     for(int i=0;i<n;i++){// input
         scanf("%d",&new[i]);
     }
-
+    roundCounter=1;
     push(ans,-1); // the output should start with inital state
+    temp=0;
     for(int i=0;i<n;i++){
         if(new[i]!=-1&&old[i]==-1){
             push(ans,i);
+            updateCounter++;
+            updated[i]=1;
+            temp=1;
         }
         if(new[i]!=old[i]){
             operation++;
         }
     }
-    push(ans,-1);
-    roundCounter+=1;
+    if(temp==1){ // this flag checks if there's any node pushed to ans, if so, then roundCounter++
+        push(ans,-1);
+        roundCounter++;
+    }
 
-    // while(updateCounter!=operation){
+    // addShortcut(3);
+    // push(ans, -1);
+    // updateCounter++;
+    // roundCounter++;
+    // pruneFunction();
 
-    // }
+    // addShortcut(0);
+    // updateCounter++;
+    // addShortcut(8);
+    // updateCounter++;
+    // push(ans, -1);
+    // roundCounter++;
+    // pruneFunction();  
+
+    // addShortcut(2);
+    // push(ans, -1);
+    // updateCounter++;
+    // roundCounter++;
+    // pruneFunction();
+
     addShortcut(0);
     push(ans, -1);
     updateCounter++;
     roundCounter++;
-
     pruneFunction();
+
+    addShortcut(3);
     push(ans, -1);
+    updateCounter++;
     roundCounter++;
-    //
-    temp=3;
-    printf("skipCount %d %d\n",temp, skipCount(temp));        
-    checkUpdated();
-    printf("\n");
+    pruneFunction();        
+
+    temp=0;
     for(int i=0;i<n;i++){
         if(old[i]!=-1&&new[i]==-1){
+            temp=1;
             push(ans,i);
+            updateCounter++;
+            updated[i]=1;
         }
     }
-    push(ans,-1);
-    roundCounter+=1;
-    // for(int i=0;i<n;i++){
-    //     if(new[i]!=-1&&old[i]!=-1){
-    //         printf("skip v%d %d\n",i,skipCount(i));
-    //     }
-    // }
-    printf("%d\n", roundCounter);
+
+    if(temp==1){ // this flag checks if there's any node pushed to ans, if so, then roundCounter++
+        push(ans,-1);
+        roundCounter++;
+    }    
+
+    checkUpdated();
+
+    printf("updateCounter: %d\noperation: %d\nroundCounter: %d\n", updateCounter, operation, roundCounter);
     // for(int i=0;i<roundCounter;i++){
     //     while(1){
     //         int temp=top(ans);
