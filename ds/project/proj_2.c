@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <limits.h>
 
-int *new, *old, *updated, *unionSet;
+int *new, *old, *updated, *backward;
 int updateCounter=0, roundCounter=1, operation=0, n, current, temp;
 typedef struct Queue{
     struct Queue *next;
     int n;
 }queue;
-queue **q, **ans, **prune, **shortcut;
+queue **ans, **prune, **shortcut;
 
 
 void push(queue** q, int value){
@@ -63,52 +63,39 @@ int findDestination(int i){
 }
 
 int skipCount(int i){
-    int count=0, current=i, dest=new[i], prevUpdated=0;
+    int count=0, current=i, dest=new[i];
     dest=findDestination(new[i]);
     do{
-        if(current==-1){
-            return -1;
-        }
         current=old[current];
 
-        if(old[current]!=-1&&new[current]!=-1&&current!=dest){
-            if(updated[current]==1){
-                if(prevUpdated==1){
-                    continue;
-                }
-                else{
-                    prevUpdated=1;
-                }
-            }
-            else{
-                prevUpdated=0;
-            }
+        if(old[current]!=-1&&new[current]!=-1&&current!=dest&&updated[current]!=1){
             count++;
         }
     }while(current!=dest);
     return count;
 }
 
-int dsuFind(int a){
-    if(a==unionSet[a]){
-        return a;
-    }
-    else{
-        unionSet[a]=dsuFind(unionSet[a]);
-        return unionSet[a];
-    }
-}
-
-void dsuUnion(int a, int b){
-    int temp1=dsuFind(a);
-    int temp2=dsuFind(b);
-    unionSet[temp2]=temp1;
-}
-
 void addShortcut(int node){
     push(shortcut, node);
     updated[node]=1;
     push(ans, node);
+    updateCounter++;
+}
+
+
+void checkBackward(void){
+    int current, dest;
+    for(int i=0;i<n;i++){
+        current=i;
+        dest=findDestination(new[i]);
+        do{
+            if(current==-1){// if you reached the end before countering dest, then it's a backward
+                backward[i]=1;
+                break;
+            }
+            current=old[current];
+        }while(current!=dest);
+    }
 }
 
 void pruneFunction(void){
@@ -116,9 +103,8 @@ void pruneFunction(void){
         int current=top(shortcut);
         pop(shortcut);
         int dest=findDestination(new[current]);
-        if(skipCount(current)==-1){
-            updated[current]=1;
-            push(ans, current);
+        if(backward[current]==1){
+            continue;
         }
         else{
             current=old[current];
@@ -138,11 +124,11 @@ void pruneFunction(void){
         pop(prune);
         push(ans, temp);
         updated[temp]=1;
-        printf("pruned %d\n",temp);
         updateCounter++;
     }
     push(ans, -1);
-    roundCounter++;    
+    roundCounter++;   
+ 
 }
 
 void checkUpdated(void){
@@ -152,15 +138,13 @@ void checkUpdated(void){
     printf("\n");
 }
 
+
 int main(){
     scanf("%d",&n);
     new=(int*)calloc(n,sizeof(int));
     old=(int*)calloc(n,sizeof(int));
     updated=(int*)calloc(n,sizeof(int));
-    unionSet=(int*)calloc(n,sizeof(int));
-    q=(queue**)malloc(sizeof(queue*));
-    *q=(queue*)malloc(sizeof(queue));
-    (*q)->next=NULL;
+    backward=(int*)calloc(n,sizeof(int));
     ans=(queue**)malloc(sizeof(queue*));
     *ans=(queue*)malloc(sizeof(queue));
     (*ans)->next=NULL;
@@ -171,15 +155,14 @@ int main(){
     *shortcut=(queue*)malloc(sizeof(queue));
     (*shortcut)->next=NULL;
 
-    for(int i=0;i<n;i++){// initialize union set
-        unionSet[i]=i;
-    }
     for(int i=0;i<n;i++){// input
         scanf("%d",&old[i]);
     }
     for(int i=0;i<n;i++){// input
         scanf("%d",&new[i]);
     }
+
+    checkBackward();
     roundCounter=1;
     push(ans,-1); // the output should start with inital state
     temp=0;
@@ -199,37 +182,40 @@ int main(){
         roundCounter++;
     }
 
-    // addShortcut(3);
-    // push(ans, -1);
-    // updateCounter++;
-    // roundCounter++;
-    // pruneFunction();
+    while(updateCounter!=operation){
+        int maxIndex=-1, maxValue=INT_MIN;
+        for(int i=0;i<n;i++){
+            if(updated[i]==0&&new[i]!=-1&&backward[i]!=1){
+                temp=skipCount(i);
+                if(temp>maxValue){
+                    maxValue=temp;
+                    maxIndex=i;
+                }
+            }
+        }
+        if(maxIndex==-1){ // if no shortcut found
+            break;
+        }
+        addShortcut(maxIndex);
+        roundCounter++;
+        push(ans, -1);
+        pruneFunction();
 
-    // addShortcut(0);
-    // updateCounter++;
-    // addShortcut(8);
-    // updateCounter++;
-    // push(ans, -1);
-    // roundCounter++;
-    // pruneFunction();  
-
-    // addShortcut(2);
-    // push(ans, -1);
-    // updateCounter++;
-    // roundCounter++;
-    // pruneFunction();
-
-    // addShortcut(0);
-    // push(ans, -1);
-    // updateCounter++;
-    // roundCounter++;
-    // pruneFunction();
-
-    // addShortcut(3);
-    // push(ans, -1);
-    // updateCounter++;
-    // roundCounter++;
-    // pruneFunction();        
+    }   
+    
+    temp=0;// act as a flag to check if there's any node pushed in this round
+    for(int i=0;i<n;i++){
+        if(backward[i]==1&&updated[i]!=1&&old[i]!=-1&&new[i]!=-1){
+            push(ans, i);
+            updated[i]=1;
+            temp=1;
+            updateCounter++;
+        }
+    }
+    if(temp==1){
+        push(ans, -1);
+        roundCounter++;
+    }
 
     temp=0;
     for(int i=0;i<n;i++){
@@ -246,9 +232,10 @@ int main(){
         roundCounter++;
     }
 
-    checkUpdated();
+    // checkUpdated();
 
-    printf("updateCounter: %d\noperation: %d\nroundCounter: %d\n", updateCounter, operation, roundCounter);
+    // printf("updateCounter: %d\noperation: %d\nroundCounter: %d\n", updateCounter, operation, roundCounter);
+    printf("%d\n",roundCounter);
     for(int i=0;i<roundCounter;i++){
         while(1){
             int temp=top(ans);
