@@ -103,7 +103,7 @@ void pruneFunction(void){
         int current=top(shortcut);
         pop(shortcut);
         int dest=findDestination(new[current]);
-        if(backward[current]==1){
+        if(backward[current]==1){ //a shortcut is backward
             continue;
         }
         else{
@@ -128,7 +128,7 @@ void pruneFunction(void){
     }
     push(ans, -1);
     roundCounter++;   
- 
+    checkBackward();
 }
 
 void checkUpdated(void){
