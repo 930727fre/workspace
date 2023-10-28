@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
-int *new, *old, *updated, *backward;
+int *new, *old, *updated, *backward, *unionSet;
 int updateCounter=0, roundCounter=1, operation=0, n, current, temp;
 typedef struct Queue{
     struct Queue *next;
@@ -10,6 +10,22 @@ typedef struct Queue{
 }queue;
 queue **ans, **prune, **shortcut;
 
+
+int dsuFind(int a){
+    if(a==unionSet[a]){
+        return a;
+    }
+    else{
+        unionSet[a]=dsuFind(unionSet[a]);
+        return unionSet[a];
+    }
+}
+
+void dsuUnion(int a, int b){
+    int temp1=dsuFind(a);
+    int temp2=dsuFind(b);
+    unionSet[temp2]=temp1;
+}
 
 void push(queue** q, int value){
     queue* temp=*q;
@@ -56,7 +72,7 @@ int isEmpty(queue** q){
 }
 
 int findDestination(int i){
-    while((old[i]==-1&&i!=n-1)||updated[i]==1){
+    while(updated[i]==1){
         i=new[i];
     }
     return i;
@@ -75,45 +91,58 @@ int skipCount(int i){
     return count;
 }
 
+
+void checkBackward(void){
+    int current, dest;
+
+    for(int i=0;i<n;i++){
+        current=i;
+        dest=findDestination(new[i]);
+        if(updated[i]==1||old[i]==-1||new[i]==-1){
+            backward[i]=-1;
+            continue;
+        }
+        else{
+            backward[i]=1;
+            do{
+                current=old[current];
+                if(dsuFind(dest)==dsuFind(current)){// find old path counters new path with same dsu value
+                    backward[i]=0;
+                    break;
+                }
+            }while(current!=n-1);
+        }
+        // if(backward[i]){
+        //     // printf("%d is backward\n",i);
+        // }
+        // else{
+        //     printf("%d is forward\n",i);
+
+        // }
+    }
+}
+
 void addShortcut(int node){
     push(shortcut, node);
     updated[node]=1;
+    dsuUnion(node, findDestination(node));
     push(ans, node);
     updateCounter++;
 }
 
 
-void checkBackward(void){
-    int current, dest;
-    for(int i=0;i<n;i++){
-        current=i;
-        dest=findDestination(new[i]);
-        do{
-            if(current==-1){// if you reached the end before countering dest, then it's a backward
-                backward[i]=1;
-                break;
-            }
-            current=old[current];
-        }while(current!=dest);
-    }
-}
 
 void pruneFunction(void){
     while(!isEmpty(shortcut)){
         int current=top(shortcut);
         pop(shortcut);
         int dest=findDestination(new[current]);
-        if(backward[current]==1){ //a shortcut is backward
-            continue;
-        }
-        else{
-            current=old[current];
-            while(current!=dest){
-                if(old[current]!=-1&&new[current]!=-1&&updated[current]==0){
-                    push(prune, current);
-                }
-                current=old[current];
+        current=old[current];
+        while(current!=dest){
+            if(old[current]!=-1&&new[current]!=-1&&updated[current]==0){
+                push(prune, current);
             }
+            current=old[current];
         }
     }
     if(isEmpty(prune)){ //no need to add roundCounter
@@ -122,13 +151,13 @@ void pruneFunction(void){
     while(!isEmpty(prune)){
         int temp=top(prune);
         pop(prune);
+        dsuUnion(temp, findDestination(temp));
         push(ans, temp);
         updated[temp]=1;
         updateCounter++;
     }
     push(ans, -1);
     roundCounter++;   
-    checkBackward();
 }
 
 void checkUpdated(void){
@@ -146,6 +175,8 @@ int main(){
     updated=(int*)calloc(n,sizeof(int));
     backward=(int*)calloc(n,sizeof(int));
     ans=(queue**)malloc(sizeof(queue*));
+    unionSet=(int*)calloc(n,sizeof(int));
+
     *ans=(queue*)malloc(sizeof(queue));
     (*ans)->next=NULL;
     prune=(queue**)malloc(sizeof(queue*));
@@ -161,14 +192,19 @@ int main(){
     for(int i=0;i<n;i++){// input
         scanf("%d",&new[i]);
     }
+    for(int i=0;i<n;i++){// initialize union set
+        unionSet[i]=i;
+    }
 
-    checkBackward();
     roundCounter=1;
     push(ans,-1); // the output should start with inital state
     temp=0;
+
+
     for(int i=0;i<n;i++){
         if(new[i]!=-1&&old[i]==-1){
             push(ans,i);
+            dsuUnion(i, findDestination(i));
             updateCounter++;
             updated[i]=1;
             temp=1;
@@ -182,8 +218,10 @@ int main(){
         roundCounter++;
     }
 
+
     while(updateCounter!=operation){
         int maxIndex=-1, maxValue=INT_MIN;
+        checkBackward();
         for(int i=0;i<n;i++){
             if(updated[i]==0&&new[i]!=-1&&backward[i]!=1){
                 temp=skipCount(i);
@@ -201,20 +239,6 @@ int main(){
         push(ans, -1);
         pruneFunction();
 
-    }   
-    
-    temp=0;// act as a flag to check if there's any node pushed in this round
-    for(int i=0;i<n;i++){
-        if(backward[i]==1&&updated[i]!=1&&old[i]!=-1&&new[i]!=-1){
-            push(ans, i);
-            updated[i]=1;
-            temp=1;
-            updateCounter++;
-        }
-    }
-    if(temp==1){
-        push(ans, -1);
-        roundCounter++;
     }
 
     temp=0;
