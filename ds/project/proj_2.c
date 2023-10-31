@@ -3,15 +3,15 @@
 #include <limits.h>
 
 int *new, *old, *updated, *backward, *unionSet;
-int updateCounter=0, roundCounter=1, operation=0, n, current, temp;
-typedef struct Queue{
+int updateCounter=0, roundCounter=1, operation=0, n, current, temp; // updateCounter stores the time we've updated, roundCounter stores the round we need to perform, operation counts the maximum step we need to update all the nodes
+typedef struct Queue{ // implement the queue by linked list
     struct Queue *next;
     int n;
 }queue;
 queue **ans, **prune, **shortcut;
 
 
-int dsuFind(int a){
+int dsuFind(int a){ // implement dsu and find the root
     if(a==unionSet[a]){
         return a;
     }
@@ -21,18 +21,18 @@ int dsuFind(int a){
     }
 }
 
-void dsuUnion(int a, int b){
+void dsuUnion(int a, int b){ // union two element and update their values
     int temp1=dsuFind(a);
     int temp2=dsuFind(b);
     unionSet[temp2]=temp1;
 }
 
-void push(queue** q, int value){
+void push(queue** q, int value){ // push the value to the end of queue
     queue* temp=*q;
-    while(temp->next!=NULL){
+    while(temp->next!=NULL){ // traverse to the end
         temp=temp->next;
     }
-    temp->next=(queue*)malloc(sizeof(queue));
+    temp->next=(queue*)malloc(sizeof(queue)); // malloc new node
     temp->next->n=value;
     temp->next->next=NULL;
     return;
@@ -44,7 +44,7 @@ int top(queue** q){
         printf("top empty\n");
     }
     else{
-        return (*q)->next->n;
+        return (*q)->next->n; //return top value
     }
 }
 
@@ -56,13 +56,13 @@ void pop(queue** q){
     }
     else{
         temp=(*q)->next;
-        (*q)->next=(*q)->next->next;
-        free(temp);
+        (*q)->next=(*q)->next->next; // link to the next node of next node
+        free(temp); // free the top mode 
         return;
     }
 }
 
-int isEmpty(queue** q){
+int isEmpty(queue** q){ // check if the queue is empty
     if((*q)->next==NULL){
         return 1;
     }
@@ -71,34 +71,32 @@ int isEmpty(queue** q){
     }
 }
 
-int findDestination(int i){
+int findDestination(int i){ // find the node that's not updated on the new path
     while(updated[i]==1){
         i=new[i];
     }
     return i;
 }
 
-int skipCount(int i){
+int skipCount(int i){// return the number that will skip on the new path
     int count=0, current=i, dest=new[i];
-    dest=findDestination(new[i]);
+    dest=findDestination(new[i]);// store the desination on the new path
     do{
         current=old[current];
-
         if(old[current]!=-1&&new[current]!=-1&&current!=dest&&updated[current]!=1){
-            count++;
+            count++;// count adds if limit satisfies
         }
     }while(current!=dest);
     return count;
 }
 
 
-void checkBackward(void){
+void checkBackward(void){ //check if this new path is backward, which will induce cycle
     int current, dest;
-
     for(int i=0;i<n;i++){
         current=i;
-        dest=findDestination(new[i]);
-        if(updated[i]==1||old[i]==-1||new[i]==-1){
+        dest=findDestination(new[i]);// find the destination first
+        if(updated[i]==1||old[i]==-1||new[i]==-1){ // nodes that doesn't matter
             backward[i]=-1;
             continue;
         }
@@ -112,27 +110,20 @@ void checkBackward(void){
                 }
             }while(current!=n-1);
         }
-        // if(backward[i]){
-        //     // printf("%d is backward\n",i);
-        // }
-        // else{
-        //     printf("%d is forward\n",i);
-
-        // }
     }
 }
 
-void addShortcut(int node){
+void addShortcut(int node){// add node to 'shortcut queue'
     push(shortcut, node);
     updated[node]=1;
-    dsuUnion(node, findDestination(node));
+    dsuUnion(node, findDestination(node)); // renew the dsu value
     push(ans, node);
     updateCounter++;
 }
 
 
 
-void pruneFunction(void){
+void pruneFunction(void){// update the nodes that're on the skipped shortcut
     while(!isEmpty(shortcut)){
         int current=top(shortcut);
         pop(shortcut);
@@ -140,7 +131,7 @@ void pruneFunction(void){
         current=old[current];
         while(current!=dest){
             if(old[current]!=-1&&new[current]!=-1&&updated[current]==0){
-                push(prune, current);
+                push(prune, current); //push the node into 'prune queue'
             }
             current=old[current];
         }
@@ -151,7 +142,7 @@ void pruneFunction(void){
     while(!isEmpty(prune)){
         int temp=top(prune);
         pop(prune);
-        dsuUnion(temp, findDestination(temp));
+        dsuUnion(temp, findDestination(temp));// combine two set components(group)
         push(ans, temp);
         updated[temp]=1;
         updateCounter++;
@@ -160,23 +151,16 @@ void pruneFunction(void){
     roundCounter++;   
 }
 
-void checkUpdated(void){
-    for(int i=0;i<n;i++){
-        printf("%d ", updated[i]);
-    }
-    printf("\n");
-}
-
 
 int main(){
     scanf("%d",&n);
-    new=(int*)calloc(n,sizeof(int));
+    new=(int*)calloc(n,sizeof(int));// malloc new, old, update, backward, unionSet arrays
     old=(int*)calloc(n,sizeof(int));
     updated=(int*)calloc(n,sizeof(int));
     backward=(int*)calloc(n,sizeof(int));
-    ans=(queue**)malloc(sizeof(queue*));
     unionSet=(int*)calloc(n,sizeof(int));
 
+    ans=(queue**)malloc(sizeof(queue*));// initialize ans, prune, shortcut queues
     *ans=(queue*)malloc(sizeof(queue));
     (*ans)->next=NULL;
     prune=(queue**)malloc(sizeof(queue*));
@@ -203,7 +187,7 @@ int main(){
 
     for(int i=0;i<n;i++){
         if(new[i]!=-1&&old[i]==-1){
-            push(ans,i);
+            push(ans,i); //update nodes that are not on old path and on new path
             dsuUnion(i, findDestination(i));
             updateCounter++;
             updated[i]=1;
@@ -218,15 +202,14 @@ int main(){
         roundCounter++;
     }
 
-
     while(updateCounter!=operation){
         int maxIndex=-1, maxValue=INT_MIN;
-        checkBackward();
+        checkBackward();// check all the nodes if they're pointing backward
         for(int i=0;i<n;i++){
             if(updated[i]==0&&new[i]!=-1&&backward[i]!=1){
                 temp=skipCount(i);
                 if(temp>maxValue){
-                    maxValue=temp;
+                    maxValue=temp; // find the shortcut with maximum skipCount value
                     maxIndex=i;
                 }
             }
@@ -234,7 +217,7 @@ int main(){
         if(maxIndex==-1){ // if no shortcut found
             break;
         }
-        addShortcut(maxIndex);
+        addShortcut(maxIndex); //update that node
         roundCounter++;
         push(ans, -1);
         pruneFunction();
@@ -243,7 +226,7 @@ int main(){
 
     temp=0;
     for(int i=0;i<n;i++){
-        if(old[i]!=-1&&new[i]==-1){
+        if(old[i]!=-1&&new[i]==-1){//update nodes that are on old path and not on new path
             temp=1;
             push(ans,i);
             updateCounter++;
@@ -256,11 +239,8 @@ int main(){
         roundCounter++;
     }
 
-    // checkUpdated();
-
-    // printf("updateCounter: %d\noperation: %d\nroundCounter: %d\n", updateCounter, operation, roundCounter);
     printf("%d\n",roundCounter);
-    for(int i=0;i<roundCounter;i++){
+    for(int i=0;i<roundCounter;i++){ //print the answer
         while(1){
             int temp=top(ans);
             pop(ans);
