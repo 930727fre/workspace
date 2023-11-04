@@ -1,0 +1,76 @@
+Case #1: sorted by "area" in descending order.
+new Country(India,1428627663,2973190,next->NULL)
+new Country(China,1425671352,9326410,next->NULL)
+new Country(UnitedStates,339996563,9147593,next->NULL)
+new Country(Indonesia,277534122,1811569,next->NULL)
+pass 0: Country(India,1428627663,2973190,next->NULL)
+insert China at head
+pass 1: Country(China,1425671352,9326410,next->India)
+pass 1: Country(India,1428627663,2973190,next->NULL)
+insert UnitedStates after India
+pass 2: Country(China,1425671352,9326410,next->India)
+pass 2: Country(India,1428627663,2973190,next->UnitedStates)
+pass 2: Country(UnitedStates,339996563,9147593,next->NULL)
+insert Indonesia after India
+pass 3: Country(China,1425671352,9326410,next->India)
+pass 3: Country(India,1428627663,2973190,next->Indonesia)
+pass 3: Country(Indonesia,277534122,1811569,next->UnitedStates)
+pass 3: Country(UnitedStates,339996563,9147593,next->NULL)
+free Country(China,1425671352,9326410,next->India)
+free Country(India,1428627663,2973190,next->Indonesia)
+free Country(Indonesia,277534122,1811569,next->UnitedStates)
+free Country(UnitedStates,339996563,9147593,next->NULL)
+
+Case #2: sorted by "name" in ascending order.
+new Country(Georgia,3728282,69700,next->NULL)
+new Country(Algeria,45606480,2381741,next->NULL)
+new Country(UnitedStates,339996563,9147593,next->NULL)
+new Country(Taiwan,23923276,32260,next->NULL)
+new Country(Spain,47519628,498980,next->NULL)
+pass 0: Country(Georgia,3728282,69700,next->NULL)
+insert Algeria at head
+pass 1: Country(Algeria,45606480,2381741,next->Georgia)
+pass 1: Country(Georgia,3728282,69700,next->NULL)
+insert UnitedStates after Georgia
+pass 2: Country(Algeria,45606480,2381741,next->Georgia)
+pass 2: Country(Georgia,3728282,69700,next->UnitedStates)
+pass 2: Country(UnitedStates,339996563,9147593,next->NULL)
+insert Taiwan after Georgia
+pass 3: Country(Algeria,45606480,2381741,next->Georgia)
+pass 3: Country(Georgia,3728282,69700,next->Taiwan)
+pass 3: Country(Taiwan,23923276,32260,next->UnitedStates)
+pass 3: Country(UnitedStates,339996563,9147593,next->NULL)
+insert Spain after Georgia
+pass 4: Country(Algeria,45606480,2381741,next->Georgia)
+pass 4: Country(Georgia,3728282,69700,next->Spain)
+pass 4: Country(Spain,47519628,498980,next->Taiwan)
+pass 4: Country(Taiwan,23923276,32260,next->UnitedStates)
+pass 4: Country(UnitedStates,339996563,9147593,next->NULL)
+free Country(Algeria,45606480,2381741,next->Georgia)
+free Country(Georgia,3728282,69700,next->Spain)
+free Country(Spain,47519628,498980,next->Taiwan)
+free Country(Taiwan,23923276,32260,next->UnitedStates)
+free Country(UnitedStates,339996563,9147593,next->NULL)
+
+Case #3: sorted by "population" in descending order.
+new Country(Russia,144444359,16378410,next->NULL)
+new Country(Malaysia,34308525,329613,next->NULL)
+new Country(Taiwan,23923276,32260,next->NULL)
+new Country(Italy,58870762,294140,next->NULL)
+pass 0: Country(Russia,144444359,16378410,next->NULL)
+insert Malaysia at head
+pass 1: Country(Malaysia,34308525,329613,next->Russia)
+pass 1: Country(Russia,144444359,16378410,next->NULL)
+insert Taiwan after Russia
+pass 2: Country(Malaysia,34308525,329613,next->Russia)
+pass 2: Country(Russia,144444359,16378410,next->Taiwan)
+pass 2: Country(Taiwan,23923276,32260,next->NULL)
+insert Italy at head
+pass 3: Country(Italy,58870762,294140,next->Malaysia)
+pass 3: Country(Malaysia,34308525,329613,next->Russia)
+pass 3: Country(Russia,144444359,16378410,next->Taiwan)
+pass 3: Country(Taiwan,23923276,32260,next->NULL)
+free Country(Italy,58870762,294140,next->Malaysia)
+free Country(Malaysia,34308525,329613,next->Russia)
+free Country(Russia,144444359,16378410,next->Taiwan)
+free Country(Taiwan,23923276,32260,next->NULL)
