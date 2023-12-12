@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define NUM 30000 // i guess the number of request may not exceed this number
 
 typedef struct Link{ // adjacdncy list
@@ -15,6 +16,7 @@ int request[NUM][3];
 int *memories;
 link **adjacencyList;
 int bfsResult[NUM]; // this array stores the number of hop each request takes according to bfs
+queue **bfsPath;
 
 int queueTop(queue** q){
     return (*q)->val;
@@ -44,12 +46,41 @@ void queuePush(queue** q, int value){
     return;
 }
 
-int bfs(int start, int dest){ // the return value is the number of hop
-    int hop=0;
-    queue* myQueue=NULL;
-    queuePush(&myQueue, 3);
+int bfsTraverse(int requestId, int* visited, queue** q){
+    
+    int current=queueTop(q), temp;
+    visited[current]=1;
+    queuePop(q);
+    printf("current=%d\n", current);
+    if(current==request[requestId][2]){// destinaction reached
+        queuePush(&(bfsPath[requestId]), current);
+        return 1; //remember to minus 1
+    }
+    else{
+        link* ptr=adjacencyList[current];
+        while(ptr!=NULL){
+            queuePush(q, ptr->val);
+            ptr=ptr->next;
+        }
+        temp=bfsTraverse(requestId, visited, q);
+        if(temp!=0){
+            queuePush(&(bfsPath[requestId]), current);
+            return temp+1;
+        }
+        else{
+            return 0;
+        }
+    }
 
-    return 3;
+}
+
+int bfs(int requestId){
+    int hop=0;
+    int visisted[nodes];
+    queue* myQueue=NULL;
+    memset(visisted, 0, sizeof(visisted)); //initialize the array
+    queuePush(&myQueue, request[requestId][1]);
+    return bfsTraverse(requestId, visisted, &myQueue);
 }
 
 int main(){
@@ -58,8 +89,7 @@ int main(){
     scanf("%d %d %d %d",&nodes, &links, &timeSlots, &requests);
     memories=(int*)malloc(nodes*sizeof(int));
     adjacencyList=(link**)malloc(nodes*sizeof(link*));
-    bfs(0,1);
-    return 0;
+    bfsPath=(queue**)malloc(requests*sizeof(queue*));
     for(int i=0;i<nodes;i++){
         scanf("%d %d",&tempA, &memories[i]);
     }
@@ -101,5 +131,17 @@ int main(){
     for(int i=0;i<requests;i++){
         scanf("%d %d %d",&request[i][0],&request[i][1],&request[i][2]);
     }   
+
+    for(int i=0;i<1;i++){
+        bfsResult[i]=bfs(i)-1;
+        printf("#%d %dstep\n", i, bfsResult[i]);
+        queue* ptr=bfsPath[i];
+        while(ptr!=NULL){
+            printf("%d ",ptr->val);
+            ptr=ptr->prev;
+        }
+        printf("\n");        
+
+    }
 
 }
