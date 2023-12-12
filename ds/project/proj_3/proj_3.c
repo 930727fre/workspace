@@ -51,7 +51,7 @@ int bfsTraverse(int requestId, int* visited, queue** q){
     int current=queueTop(q), temp;
     visited[current]=1;
     queuePop(q);
-    printf("current=%d\n", current);
+    // printf("current=%d\n", current);
     if(current==request[requestId][2]){// destinaction reached
         queuePush(&(bfsPath[requestId]), current);
         return 1; //remember to minus 1
@@ -59,7 +59,9 @@ int bfsTraverse(int requestId, int* visited, queue** q){
     else{
         link* ptr=adjacencyList[current];
         while(ptr!=NULL){
-            queuePush(q, ptr->val);
+            if(visited[ptr->val]==0){
+                queuePush(q, ptr->val);
+            }
             ptr=ptr->next;
         }
         temp=bfsTraverse(requestId, visited, q);
@@ -132,9 +134,9 @@ int main(){
         scanf("%d %d %d",&request[i][0],&request[i][1],&request[i][2]);
     }   
 
-    for(int i=0;i<1;i++){
+    for(int i=0;i<requests;i++){
         bfsResult[i]=bfs(i)-1;
-        printf("#%d %dstep\n", i, bfsResult[i]);
+        printf("#%d %d step\n", i, bfsResult[i]);
         queue* ptr=bfsPath[i];
         while(ptr!=NULL){
             printf("%d ",ptr->val);
