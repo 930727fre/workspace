@@ -6,6 +6,7 @@ typedef struct Link{ // adjacdncy list
     struct Link* next;
 }link;
 int nodes, links, timeSlots, requests;
+int request[1000][3];
 int *memories;
 link **adjacencyList;
 
@@ -35,7 +36,6 @@ int main(){
             tempPtr=tempPtr->next;
             tempPtr->val=tempB;
             tempPtr->next=NULL;
-
         }
 
         if(adjacencyList[tempB]==NULL){ // insert tempA int o adjacency list
@@ -55,15 +55,8 @@ int main(){
 
         }
     }
+    for(int i=0;i<requests;i++){
+        scanf("%d %d %d",&request[i][0],&request[i][1],&request[i][2]);
+    }   
 
-    for(int i=0;i<nodes;i++){
-        printf("%d:\n",i);
-        tempPtr=adjacencyList[i];
-        while(tempPtr!=NULL){
-            printf("%d ", tempPtr->val);
-            tempPtr=tempPtr->next;
-        }
-        printf("\n");
-        
-    }
 }
