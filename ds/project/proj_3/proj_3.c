@@ -14,7 +14,6 @@ int request[NUM][3];
 int *memories;
 int bfsResult[NUM][2]; // this array stores the number of hop each request takes according to bfs
 
-
 link **adjacencyList;
 link **bfsPath;
 
@@ -22,6 +21,7 @@ void enqueue(link** front, link** rear, int value){
     if((*front)==NULL){
         (*front)=(link*)malloc(sizeof(link));
         (*front)->val=value;
+        (*front)->prev=NULL;
         (*rear)=(*front);
         return;
     }
@@ -89,7 +89,7 @@ void push(link** s, int value){
 void bfsBacktrace(int requestId, int* parent, int temp){
     push(&(bfsPath[requestId]), temp);
     if(parent[temp]!=-1){
-        bfsBacktrace(requestId, parent, temp);
+        bfsBacktrace(requestId, parent, parent[temp]);
     }
 }
 
@@ -98,24 +98,20 @@ int bfsTraverse(int requestId, int* visited, int* parent, link** front, link** r
     dequeue(front, rear);
     if(current==request[requestId][2]){// destinaction reached
         bfsBacktrace(requestId, parent, current);
-        return 1; //remember to minus 1
+        return 1;
     }
     else{
         link* ptr=adjacencyList[current];
         while(ptr!=NULL){
             if(visited[ptr->val]==0){
                 enqueue(front, rear, ptr->val);
-                visited[current]=1;
+                visited[ptr->val]=1;
                 parent[ptr->val]=current;
             }
             ptr=ptr->next;
         }
         if(queueEmpty(front)==0){
-            temp=bfsTraverse(requestId, visited, parent, front, rear);
-            if(temp!=0){
-                push(&(bfsPath[requestId]), current);
-                return temp+1;
-            }
+            bfsTraverse(requestId, visited, parent, front, rear);
         }
 
     }
@@ -123,7 +119,6 @@ int bfsTraverse(int requestId, int* visited, int* parent, link** front, link** r
 }
 
 int bfs(int requestId){
-    int hop=0;
     int visited[nodes], parent[nodes];
     link *rear=NULL, *front=NULL;
     memset(visited, 0, sizeof(visited)); //initialize the array
@@ -138,13 +133,15 @@ int bfs(int requestId){
 
 
 int main(){
-    int tempA, tempB, temp, tempArr[2];
+    int tempA, tempB, temp, tempArr[2], counter;
     link* tempPtr;
 
     scanf("%d %d %d %d",&nodes, &links, &timeSlots, &requests);
     memories=(int*)malloc(nodes*sizeof(int));
     adjacencyList=(link**)malloc(nodes*sizeof(link*));
     bfsPath=(link**)malloc(requests*sizeof(link*));
+    memset(adjacencyList, 0, nodes*sizeof(link*));
+    memset(bfsPath, 0, requests*sizeof(link*));
     for(int i=0;i<NUM;i++){
         bfsResult[i][0]=i;
     }
@@ -189,19 +186,22 @@ int main(){
     for(int i=0;i<requests;i++){
         scanf("%d %d %d",&request[i][0],&request[i][1],&request[i][2]);
     }   
-
+    // for(int i=requests-1;i>=0;i--){
     for(int i=0;i<requests;i++){
-        bfsResult[i][1]=bfs(i)-1;
-        // printf("#%d %d step\n", i, bfsResult[i][1]);
-        // stack* ptr=bfsPath[i];
-        // while(ptr!=NULL){
-        //     printf("%d ",ptr->val);
-        //     ptr=ptr->prev;
-        // }
-        // printf("\n");        
+        bfs(i);
+        counter=0;
+        // printf("#%d\n",i);
+        link* ptr=bfsPath[i];
+        while(ptr!=NULL){
+            counter++;
+            // printf("%d ",ptr->val);
+            ptr=ptr->prev;
+        }
+        bfsResult[i][1]=counter;
+        // printf("\n%d steps\n", counter);        
     }
     for(int i=0;i<requests;i++){
-        for(int j=0;j<requests-i;j++){
+        for(int j=0;j<requests-i-1;j++){
             if(bfsResult[j][1]>bfsResult[j+1][1]){
                 temp=bfsResult[j][0];
                 bfsResult[j][0]=bfsResult[j+1][0];
@@ -213,12 +213,12 @@ int main(){
         }
     }
     for(int i=requests-1;i>=0;i--){
-        // printf("#%d %d step\n", i, bfsResult[i][1]);
-        link* ptr=bfsPath[i];
+        printf("#%d\n",bfsResult[i][0]);
+        link* ptr=bfsPath[bfsResult[i][0]];
         while(ptr!=NULL){
-            // printf("%d ",ptr->val);
+            printf("%d ",ptr->val);
             ptr=ptr->prev;
         }
-        // printf("\n");        
+        printf("\n%d steps\n", bfsResult[i][1]);         
     }    
 }
