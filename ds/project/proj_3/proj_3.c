@@ -12,10 +12,110 @@ typedef struct Link{ // adjacdncy list
 int nodes, links, timeSlots, requests;
 int request[NUM][3];
 int *memories;
-int bfsResult[NUM][2]; // this array stores the number of hop each request takes according to bfs
+int bfsResult[NUM][3]; // this array stores requestId/ the number of hop/ request accepted or not
+int **capacity;
 
 link **adjacencyList;
 link **bfsPath;
+
+void printPath(int index){
+    printf("#%d\n",bfsResult[index][0]);
+    link* ptr=bfsPath[bfsResult[index][0]];
+    while(ptr!=NULL){
+        printf("%d ",ptr->val);
+        ptr=ptr->prev;
+    }
+    printf("\n%d steps\n", bfsResult[index][1]);   
+}
+
+int check(int val, int tempCapacity[nodes][timeSlots], int time){
+    if(tempCapacity[val][time]+1<=memories[val]){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+int checkNumerology(int index){
+    if(bfsResult[index][1]>timeSlots){
+        return 0;
+    }
+    else{
+        int arr[nodes], i=0, tempCapacity[nodes][timeSlots], time=timeSlots-1;
+        link* ptr=bfsPath[bfsResult[index][0]];
+
+        for(int i=0;i<nodes;i++){
+            for(int j=0;j<timeSlots;j++){
+                tempCapacity[i][j]=capacity[i][j];
+            }
+        }
+        while(ptr!=NULL){
+            arr[i]=ptr->val;
+            i++;
+            ptr=ptr->prev;
+        }
+        for(int i=bfsResult[index][1]-1;i>0;i--){
+            if(i!=1){
+                if(check(arr[i],tempCapacity, time)&&check(arr[0],tempCapacity, time)){
+                    tempCapacity[arr[i]][time]++;
+                    tempCapacity[arr[0]][time]++;
+                }
+                else{
+                    return 0;
+                }
+                if(check(arr[i],tempCapacity, time-1)&&check(arr[i-1],tempCapacity, time-1)){
+                    tempCapacity[arr[i]][time-1]++;
+                    tempCapacity[arr[i-1]][time-1]++;
+                }
+                else{
+                    return 0;
+                }
+                if(check(arr[i],tempCapacity, time-2)&&check(arr[i-1],tempCapacity, time-2)){
+                    tempCapacity[arr[i]][time-2]++;
+                    tempCapacity[arr[i-1]][time-2]++;
+                } 
+                else{
+                    return 0;
+                }   
+            }
+            else{
+                if(check(arr[1],tempCapacity, time)&&check(arr[0],tempCapacity, time)){
+                    tempCapacity[arr[1]][time]++;
+                    tempCapacity[arr[0]][time]++;
+                } 
+                else{
+                    return 0;
+                }
+                if(check(arr[1],tempCapacity, time-1)&&check(arr[0],tempCapacity, time-1)){
+                    tempCapacity[arr[1]][time-1]++;
+                    tempCapacity[arr[0]][time-1]++;
+                } 
+                else{
+                    return 0;
+                } 
+            }
+                    
+            time--;
+        }
+       
+        // for(int j=timeSlots-1;j>=0;j--){
+        //     for(int i=0;i<nodes;i++){
+        //         printf("%d",tempCapacity[i][j]);
+        //     }
+        //     printf("\n");
+        // }   
+        // printf("\n");
+
+        for(int i=0;i<nodes;i++){
+            for(int j=0;j<timeSlots;j++){
+                capacity[i][j]=tempCapacity[i][j];
+            }
+        }       
+        return 1;
+    }
+  
+}
 
 void enqueue(link** front, link** rear, int value){
     if((*front)==NULL){
@@ -133,18 +233,28 @@ int bfs(int requestId){
 
 
 int main(){
-    int tempA, tempB, temp, tempArr[2], counter;
+    int tempA, tempB, temp, tempArr[2], counter, acceptedCounter=0;
     link* tempPtr;
 
     scanf("%d %d %d %d",&nodes, &links, &timeSlots, &requests);
     memories=(int*)malloc(nodes*sizeof(int));
     adjacencyList=(link**)malloc(nodes*sizeof(link*));
     bfsPath=(link**)malloc(requests*sizeof(link*));
+    capacity=(int**)malloc(nodes*sizeof(int*));
     memset(adjacencyList, 0, nodes*sizeof(link*));
     memset(bfsPath, 0, requests*sizeof(link*));
+
+    for(int i=0;i<nodes;i++){
+        capacity[i]=(int*)malloc(timeSlots*sizeof(int));
+        for(int j=0;j<timeSlots;j++){
+            capacity[i][j]=0;
+        }
+    }
     for(int i=0;i<NUM;i++){
         bfsResult[i][0]=i;
+        bfsResult[i][2]=0;
     }
+
     for(int i=0;i<nodes;i++){
         scanf("%d %d",&tempA, &memories[i]);
     }
@@ -190,15 +300,12 @@ int main(){
     for(int i=0;i<requests;i++){
         bfs(i);
         counter=0;
-        // printf("#%d\n",i);
         link* ptr=bfsPath[i];
         while(ptr!=NULL){
             counter++;
-            // printf("%d ",ptr->val);
             ptr=ptr->prev;
         }
-        bfsResult[i][1]=counter;
-        // printf("\n%d steps\n", counter);        
+        bfsResult[i][1]=counter;      
     }
     for(int i=0;i<requests;i++){
         for(int j=0;j<requests-i-1;j++){
@@ -212,13 +319,17 @@ int main(){
             }
         }
     }
-    for(int i=requests-1;i>=0;i--){
-        printf("#%d\n",bfsResult[i][0]);
-        link* ptr=bfsPath[bfsResult[i][0]];
-        while(ptr!=NULL){
-            printf("%d ",ptr->val);
-            ptr=ptr->prev;
+    // for(int i=0;i<requests;i++){
+    //     printPath(i);
+    // }    
+    for(int i=0;i<requests;i++){
+        bfsResult[i][2]=checkNumerology(i);
+    }
+
+    for(int i=0;i<requests;i++){
+        if(bfsResult[i][2]){
+            printf("%d\n",i);
         }
-        printf("\n%d steps\n", bfsResult[i][1]);         
-    }    
+    }
+
 }
