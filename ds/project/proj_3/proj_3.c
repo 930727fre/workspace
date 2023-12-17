@@ -13,28 +13,11 @@ typedef struct Link{ // adjacdncy list
 int nodes, links, timeSlots, requests;
 int request[NUM][3];
 int *memories;
-int bfsResult[NUM][4]; // this array stores requestId/ the number of node on the path/ request accepted or not/ optimized or not
+int bfsResult[NUM][3]; // this array stores requestId/ the number of node on the path/ request accepted or not
 int **capacity;
 
 link **adjacencyList;
 link **bfsPath;
-
-void printOptimize(int index){
-    int arr[nodes], i=0, T=timeSlots/2;
-    link* ptr=bfsPath[bfsResult[index][0]];
-
-    while(ptr!=NULL){
-        arr[i]=ptr->val;
-        i++;
-        ptr=ptr->prev;
-    }
-    // Print the tree edges based on the BFS path
-    printf("%d %d %d\n",arr[0], arr[1],T-bfsResult[index][1]+2);
-    for(int i=2;i<bfsResult[index][1];i++){
-        printf("%d %d %d\n", arr[i-1], arr[i], T-bfsResult[index][1]+i);
-        printf("%d %d %d %d %d %d %d\n", arr[0], arr[i], arr[0], arr[i-1], arr[i-1], arr[i], T-bfsResult[index][1]+i+1);
-    }    
-}
 
 // Function to print the tree based on the BFS path
 void printTree(int index){
@@ -56,7 +39,7 @@ void printTree(int index){
 
 // Function to print the nodes on the BFS path
 void printPath(int index){
-    printf("%d ",bfsResult[index][0]);
+    printf("#%d ",bfsResult[index][0]);
     // printf("#%d ",bfsResult[index][0]);
     link* ptr=bfsPath[bfsResult[index][0]];
     while(ptr!=NULL){
@@ -75,93 +58,6 @@ int check(int val, int tempCapacity[nodes][timeSlots], int time){
     else{
         return 0; // Node does not have enough capacity
     }
-}
-
-int optimize(int index){
-    int T=timeSlots/2;
-    if(bfsResult[index][1]>T){
-        return 0;  // Numerology is longer than timeSlot
-    }
-    else{
-        int arr[nodes], i=0, tempCapacity[nodes][timeSlots], time=T-1;
-        link* ptr=bfsPath[bfsResult[index][0]];
-
-        // Copy the capacity array to a temporary array
-        for(int i=0;i<nodes;i++){
-            for(int j=0;j<timeSlots;j++){
-                tempCapacity[i][j]=capacity[i][j];
-            }
-        }
-
-        // Extract the nodes from the BFS path
-        while(ptr!=NULL){
-            arr[i]=ptr->val;
-            i++;
-            ptr=ptr->prev;
-        }
-
-        // Check numerology constraint for each time step
-        for(int i=bfsResult[index][1]-1;i>0;i--){
-            if(i!=1){
-                if(check(arr[i],tempCapacity, time)&&check(arr[0],tempCapacity, time)){
-                    tempCapacity[arr[i]][time]++;
-                    tempCapacity[arr[0]][time]++;
-                }
-                else{
-                    return 0;
-                }
-                if(check(arr[i],tempCapacity, time-1)&&check(arr[i-1],tempCapacity, time-1)){
-                    tempCapacity[arr[i]][time-1]++;
-                    tempCapacity[arr[i-1]][time-1]++;
-                }
-                else{
-                    return 0;
-                }
-                if(check(arr[i],tempCapacity, time-2)&&check(arr[i-1],tempCapacity, time-2)){
-                    tempCapacity[arr[i]][time-2]++;
-                    tempCapacity[arr[i-1]][time-2]++;
-                } 
-                else{
-                    return 0;
-                }   
-            }
-            else{
-                if(check(arr[1],tempCapacity, time)&&check(arr[0],tempCapacity, time)){
-                    tempCapacity[arr[1]][time]++;
-                    tempCapacity[arr[0]][time]++;
-                } 
-                else{
-                    return 0;
-                }
-                if(check(arr[1],tempCapacity, time-1)&&check(arr[0],tempCapacity, time-1)){
-                    tempCapacity[arr[1]][time-1]++;
-                    tempCapacity[arr[0]][time-1]++;
-                } 
-                else{
-                    return 0;
-                } 
-            }
-                    
-            time--;
-        }
-       
-        // for(int j=T-1;j>=0;j--){
-        //     for(int i=0;i<nodes;i++){
-        //         printf("%d",tempCapacity[i][j]);
-        //     }
-        //     printf("\n");
-        // }   
-        // printf("\n");
-
-        // Copy the updated temporary capacity array back to the main capacity array
-        for(int i=0;i<nodes;i++){
-            for(int j=0;j<timeSlots;j++){
-                capacity[i][j]=tempCapacity[i][j];
-            }
-        }       
-        return 1;
-    }    
-
 }
 
 // Function to check the numerology constraint for a request
@@ -232,13 +128,13 @@ int checkNumerology(int index){
             time--;
         }
        
-        // for(int j=timeSlots-1;j>=0;j--){
-        //     for(int i=0;i<nodes;i++){
-        //         printf("%d",tempCapacity[i][j]);
-        //     }
-        //     printf("\n");
-        // }   
-        // printf("\n");
+        for(int j=timeSlots-1;j>=0;j--){
+            for(int i=0;i<nodes;i++){
+                printf("%d",tempCapacity[i][j]);
+            }
+            printf("\n");
+        }   
+        printf("\n");
 
         // Copy the updated temporary capacity array back to the main capacity array
         for(int i=0;i<nodes;i++){
@@ -400,7 +296,6 @@ int main(){
     for(int i=0;i<NUM;i++){
         bfsResult[i][0]=i;
         bfsResult[i][2]=0;
-        bfsResult[i][3]=0;
     }
 
     for(int i=0;i<nodes;i++){
@@ -473,22 +368,19 @@ int main(){
                 bfsResult[j+1][1]=temp;
             }
         }
-    }   
+    }
+    // for(int i=0;i<requests;i++){
+    //     printPath(i);
+    // }    
 
     // check if the numerology fits
     for(int i=0;i<requests;i++){
         bfsResult[i][2]=checkNumerology(i);
     }
 
-    for(int i=0;i<requests;i++){
-        if(bfsResult[i][2]==0){
-            bfsResult[i][3]=optimize(i);
-        }
-    }
-
     // count the accepted requests
     for(int i=0;i<requests;i++){
-        if(bfsResult[i][2]||bfsResult[i][3]){
+        if(bfsResult[i][2]){
             acceptedCounter++;
         }
     }
@@ -499,10 +391,6 @@ int main(){
         if(bfsResult[i][2]){
             printPath(i);
             printTree(i);
-        }
-        else if(bfsResult[i][3]){
-            printPath(i);
-            printOptimize(i);
         }
     }
 

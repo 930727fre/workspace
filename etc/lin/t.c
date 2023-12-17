@@ -1,9 +1,12 @@
-#include <stdio.h>
-#include <math.h>
-#include <stdbool.h>
-int main(){
-    int n, flag=1;
-    while(1){
-        
-    }
-}
+
+
+str1, str2, str70
+del1, del2
+
+3/ 2
+
+strtok(str1, del1);
+strtok(NULL, del1);
+strtok(NULL, del1);
+strtok(str2, del2);
+strtok(NULL, del2);
