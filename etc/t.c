@@ -1,11 +1,13 @@
+#include <string.h>
 #include <stdio.h>
 
 int main(){
-    int a, b, c;
-    for(int i=0;i<999;i++){
-        scanf("%d %d %d",&a, &b, &c);
-        if(b==c){
-            printf("yes");
-        }
-    }
+    char str[]="apple";
+    char* ptr;
+    ptr=strtok(str, ",");
+    printf("%s\n", ptr);
+    ptr=strtok(NULL, ",");
+    printf("%s", ptr);    
 }
+
+

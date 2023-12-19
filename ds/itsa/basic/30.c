@@ -3,10 +3,10 @@
 int main() {
     int month, day;
 
-    // 輸入月及日期
+    // Input the month and day
     scanf("%d %d", &month, &day);
 
-    // 根據輸入的月份和日期確定星座
+    // Determine the zodiac sign based on the input month and day
     if ((month == 1 && day >= 21 && day <= 31) || (month == 2 && day >= 1 && day <= 18)) {
         printf("Aquarius\n");
     } else if ((month == 2 && day >= 19 && day <= 29) || (month == 3 && day >= 1 && day <= 20)) {

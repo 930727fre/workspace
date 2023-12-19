@@ -15,3 +15,4 @@ int main(){
     cout<<"maximum:"<<fixed<<setprecision(2)<<max<<endl;
     cout<<"minimum:"<<fixed<<setprecision(2)<<min<<endl;
 }
+
