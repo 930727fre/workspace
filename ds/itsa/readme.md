@@ -3,9 +3,10 @@
 
 the following code is written in c
 
-[itsa basic](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/index.php?id=1395)
+[basic](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/index.php?id=1395): x22 AC
 
-#AC: 22
+[array I](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/index.php?id=63): x7 AC
 
-others:
-itsa 
+[string I](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/index.php?id=75): x5 AC
+
+total: 34
