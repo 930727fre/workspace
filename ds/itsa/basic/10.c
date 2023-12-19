@@ -3,7 +3,6 @@
 int main() {
     int a, b, temp;
 
-    // Input two integers
     scanf("%d %d", &a, &b);
 
     // Swap a and b if a is smaller than b

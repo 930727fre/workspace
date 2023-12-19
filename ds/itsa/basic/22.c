@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-// Function to check for a winning condition in the tic-tac-toe game
 int check(int v[3][3]) {
     // Check rows
     for (int i = 0; i < 3; i++) {
@@ -24,20 +23,18 @@ int check(int v[3][3]) {
         return 1;
     }
 
-    return 0; // No winning condition found
+    return 0;
 }
 
 int main() {
     int v[3][3];
 
-    // Input the tic-tac-toe board
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             scanf("%d", &v[i][j]);
         }
     }
 
-    // Check for a winning condition and output the result
     if (check(v)) {
         printf("True\n");
     } else {

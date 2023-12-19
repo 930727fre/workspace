@@ -3,10 +3,8 @@
 int main() {
     int n;
 
-    // Input an integer
     scanf("%d", &n);
 
-    // Check the season based on the month
     if (n >= 3 && n <= 5) {
         printf("Spring");
     } else if (n >= 6 && n <= 8) {

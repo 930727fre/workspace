@@ -12,10 +12,8 @@ int fn(int n) {
 int main() {
     int k;
 
-    // Input an integer
     scanf("%d", &k);
 
-    // Output the result of the recursive function
     printf("%d\n", fn(k));
 
     return 0;

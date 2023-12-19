@@ -1,50 +1,59 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_DIGITS 31
+char *strrev(char *str){ // reverse the string
+    char c, *front, *back;
 
-void addLargeIntegers(char num1[], char num2[], char result[]) {
+    if(!str || !*str)
+        return str;
+    for(front=str,back=str+strlen(str)-1;front < back;front++,back--){
+        c=*front;*front=*back;*back=c;
+    }
+    return str;
+}
+
+void addLargeIntegers(char a[], char b[]) {
+    char ans[1000];
+    int n = strlen(a);
+    int m = strlen(b);
+
+    // Reverse the strings
+    strrev(a);
+    strrev(b);
+
+    int length = n > m ? n : m;
     int carry = 0;
-    int len1 = strlen(num1);
-    int len2 = strlen(num2);
-    int maxLength = (len1 > len2) ? len1 : len2;
 
-    for (int i = 0; i < maxLength; i++) {
-        int digit1 = (i < len1) ? (num1[len1 - i - 1] - '0') : 0;
-        int digit2 = (i < len2) ? (num2[len2 - i - 1] - '0') : 0;
+    for (int i = 0; i < length; i++) {
+        int num1 = (i < n) ? (a[i] - '0') : 0;
+        int num2 = (i < m) ? (b[i] - '0') : 0;
 
-        int sum = digit1 + digit2 + carry;
-        result[i] = (sum % 10) + '0';
+        int sum = num1 + num2 + carry;
+
+        ans[i] = (sum % 10) + '0';
         carry = sum / 10;
     }
 
-    if (carry > 0) {
-        result[maxLength] = carry + '0';
-        result[maxLength + 1] = '\0';
-    } else {
-        result[maxLength] = '\0';
-    }
+    // If there is a carry after the last addition
+    if (carry)
+        ans[length++] = carry + '0';
 
-    // Reverse the result string
-    int resultLength = strlen(result);
-    for (int i = 0; i < resultLength / 2; i++) {
-        char temp = result[i];
-        result[i] = result[resultLength - i - 1];
-        result[resultLength - i - 1] = temp;
-    }
+    ans[length] = '\0';
+
+    // Reverse the result to get the correct order
+    strrev(ans);
+
+    printf("%s\n", ans);
 }
 
 int main() {
-    int N;
-    scanf("%d", &N);
+    int n;
+    scanf("%d", &n);
 
-    for (int i = 0; i < N; i++) {
-        char num1[MAX_DIGITS], num2[MAX_DIGITS], result[MAX_DIGITS + 1];
-        scanf("%s %s", num1, num2);
-
-        addLargeIntegers(num1, num2, result);
-
-        printf("%s\n", result);
+    for (int i = 0; i < n; i++) {
+        char a[1000], b[1000];
+        scanf("%s %s", a, b);
+        addLargeIntegers(a, b);
     }
 
     return 0;

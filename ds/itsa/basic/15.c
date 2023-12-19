@@ -2,12 +2,11 @@
 #include <string.h>
 #include <ctype.h>
 
-// Function to split a string into a vector based on a pattern
+// split a string into a vector based on a pattern
 void split(char* str, char* pattern, char* result[], int* count) {
     char* token = strtok(str, pattern);
     *count = 0;
 
-    // Split the string using strtok
     while (token != NULL) {
         result[(*count)++] = token;
         token = strtok(NULL, pattern);
@@ -20,7 +19,6 @@ int main() {
     char* pattern = " ";
     int ans[26];
 
-    // Input a line
     fgets(str, sizeof(str), stdin);
 
     int count;
@@ -31,7 +29,7 @@ int main() {
     // Output the number of words
     printf("%d\n", count);
 
-    // Initialize the ans array
+    // Initialize
     for (int i = 0; i < 26; i++) {
         ans[i] = 0;
     }
@@ -45,7 +43,6 @@ int main() {
         }
     }
 
-    // Output the result
     for (int i = 0; i < 26; i++) {
         if (ans[i]) {
             printf("%c : %d\n", 'a' + i, ans[i]);

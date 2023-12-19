@@ -1,25 +1,37 @@
-問題描述
+#include <stdio.h>
 
-志明跟春嬌是班上的一對情侶，他們有寫交換日記來打發時間的習慣，為了防止他們寫的內容被幫忙傳的同學，或者是不小心被老師沒收，而曝光了裡面寫的東西，他們想到了一個辦法，就是把內容的所有字母都往後數幾次的字母替代，而往後數幾次的數目就寫在內容的下一行。但是，問題來了，春嬌覺得每次寫完都要在數來數去的轉化成”加密”格式，實在是太麻煩了。但又礙於不想被輕易的看到內容，於是她拜託你寫個程式幫忙她可以直接把寫好的內容轉化成”加密”的型態。加密結果不會影響原字母的大小寫，且數字部分亦作相同處理，但不處理符號及特殊字元及中文。
+int main() {
+    char str[101];
+    int n;
 
-輸入說明
+    fgets(str, sizeof(str), stdin);
 
-第一行為想輸入的內容，不超過 100 個字
+    // Read the number of positions to shift
+    scanf("%d", &n);
 
-第二行為打完你想輸入的內容之後，換行輸入你想要往後替代的數目。
+    for (int i = 0; str[i] != '\0'; i++) {
+        // If it is a letter
+        if (isalpha(str[i])) {
+            // Preserve the case and shift by the specified number of positions
+            if (isupper(str[i])) {
+                printf("%c", ((str[i] - 'A' + n) % 26) + 'A');
+            } else {
+                printf("%c", ((str[i] - 'a' + n) % 26) + 'a');
+            }
+        }
+        // If it is a digit
+        else if (isdigit(str[i])) {
+            // Preserve the digit and shift by the specified number of positions
+            printf("%c", ((str[i] - '0' + n) % 10) + '0');
+        }
+        // If it is another character
+        else {
+            // Preserve it unchanged
+            printf("%c", str[i]);
+        }
+    }
 
-輸出說明
+    printf("\n");
 
-印出轉換後的句子。
-
-範例
-
-Sample Input
-
-How are you?
-
-2
-
-Sample Output
-
-Jqy ctg aqw?
+    return 0;
+}

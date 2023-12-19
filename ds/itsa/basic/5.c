@@ -14,12 +14,11 @@ void invert(int ref[8]) {
 int main() {
     int input, arr[8];
 
-    // Initialize the array with zeros
+    // Initialize
     for (int i = 0; i < 8; i++) {
         arr[i] = 0;
     }
 
-    // Input an integer
     scanf("%d", &input);
 
     // Convert the positive integer to binary representation
@@ -30,7 +29,7 @@ int main() {
                 input -= pow(2, i);
             }
         }
-    } else { // Handle the case of negative integer
+    } else { // case of negative integer
         input *= -1;
 
         // Convert the absolute value of the negative integer to binary representation
@@ -54,7 +53,7 @@ int main() {
         }
     }
 
-    // Output the binary representation
+    // Output
     for (int i = 7; i >= 0; i--) {
         printf("%d", arr[i]);
     }

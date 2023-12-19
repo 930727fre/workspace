@@ -4,7 +4,6 @@
 int main() {
     int flag = 0, i;
 
-    // Input an integer
     scanf("%d", &i);
 
     // Check for prime by iterating from 2 to the square root of i
@@ -16,7 +15,6 @@ int main() {
         }
     }
 
-    // Output the result
     if (flag == 0) {
         printf("YES\n");
     }
