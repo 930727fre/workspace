@@ -1,3 +1,8 @@
+# doing leetcode
+## resource
+ - grind 75
+ - bline 75
+ - [Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
 # resume for software engineer
 ## essentials
  - essay/ club/ experience at school
@@ -11,7 +16,7 @@
 5.  Education: 新鮮人可將 education 和 profession experience 調換
 6.  Other Experience: 社團，競賽，義工等
 7.  Publications, master thesis: 若是學生的發表而且和工作無直接關聯，畢業三年後可省略
-8. format: 感覺[陳漢儒學長的那種](https://future-outlier.github.io/CV/ERIC_CHEN_CV.pdf)就很不錯了 關鍵字：美式cv範本
+8. format: 感覺[陳漢儒學長的那種](https://future-outlier.github.io/CV/ERIC_CHEN_CV.pdf)就很不錯了 keyword: 美式cv範本
 
 ## 以下是一些我覺得真的要求職才會需要用到的資源
  - [2021 疫情找工作-面試分享 Google/MS/Amazon/Roku](https://richard-chang.medium.com/2021-%E7%96%AB%E6%83%85%E6%89%BE%E5%B7%A5%E4%BD%9C-%E9%9D%A2%E8%A9%A6%E5%88%86%E4%BA%AB-google-microsoft-amazon-roku-811b2db5188)
