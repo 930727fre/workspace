@@ -10,10 +10,13 @@ int fc(vector<int>& temp){
     return 0;
 }
 int main(){
-    vector<int> num;
-    cout<<&num<<endl;
-    num.push_back(1);
-    fc(num);
-    cout<<num[1]<<endl;
-    return 0;
+    for(int i=0;i<3;i++){
+        cout<<i<<endl;
+    }
+    cout<<endl;
+    for(int i=0;i<3;++i){
+        cout<<i<<endl;
+    }
+    cout<<endl;    
+
 }

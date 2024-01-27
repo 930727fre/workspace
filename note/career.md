@@ -1,8 +1,4 @@
-# doing leetcode
-## resource
- - grind 75
- - bline 75
- - [Algorithm Problem Classification](https://www.programcreek.com/2013/08/leetcode-problem-classification/)
+
 # resume for software engineer
 ## essentials
  - essay/ club/ experience at school
