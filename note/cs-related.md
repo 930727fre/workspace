@@ -1,6 +1,3 @@
-
-  
-
 ~~[Leetcode刷題學習筆記–心得統整](https://hackmd.io/@meyr543/r1skFcvgY#Leetcode%E5%88%B7%E9%A1%8C%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98%E2%80%93%E5%BF%83%E5%BE%97%E7%B5%B1%E6%95%B4)~~
 
   
@@ -19,7 +16,7 @@
 
 Blockchain roadmap
 
-  
+
 
 hackloi, sql injection, pwn
 
@@ -119,8 +116,6 @@ Linear programming founding
 
 Gitbook
 
-  
-
 [技術保鮮盒](https://medium.com/mr-efacani-teatime)
 
   
@@ -150,3 +145,6 @@ Coolshell.cn
   
 
 [極客時間優惠](https://leetcode.wang/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4%E4%BC%98%E6%83%A0%E7%BA%A2%E5%8C%85%E8%BF%94%E7%8E%B0.html)
+
+
+[RDBMS vs. NOSQL | 關聯式資料庫 vs. 非關聯式資料庫](https://medium.com/@eric248655665/rdbms-vs-nosql-%E9%97%9C%E8%81%AF%E5%BC%8F%E8%B3%87%E6%96%99%E5%BA%AB-vs-%E9%9D%9E%E9%97%9C%E8%81%AF%E5%BC%8F%E8%B3%87%E6%96%99%E5%BA%AB-1423c9fbb91a)
