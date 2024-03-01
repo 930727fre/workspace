@@ -1,2 +1,0 @@
-`$ ./a.out /etc/passwd /etc /dev/log /dev/tty \`
-`/var/lib/oprofile/opd_pipe /dev/sr0 /dev/cdrom `: we  have  explicitly  entered  a  backslash  at  the  end  of  the  first  command  line, telling  the  shell  that  we  want  to  continue  entering  the  command  on  another  line.
