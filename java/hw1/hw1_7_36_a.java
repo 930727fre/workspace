@@ -1,12 +1,12 @@
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-public class hw1_7_36
+public class hw1_7_36_a
 {
 	public static void main(String[] args) {
 		int accumulator = 0, operation, operand, temp, input, haltFlag = 0, index = 0;
 		int[] memory = new int[100];
-		File file = new File("hw1_7_36.sml");
+		File file = new File("hw1_7_36_a.sml");
 		Scanner stdioScanner = new Scanner(System.in);
 
         try {
@@ -31,7 +31,7 @@ public class hw1_7_36
 			operation = memory[index];
 			operand = operation%100;
 			operation /= 100;
-			System.out.printf("%d %d\n", operation, operand);
+			// System.out.printf("%d %d\n", operation, operand);
 			switch (operation) {
 				case 10:
 					System.out.printf("read: ");
