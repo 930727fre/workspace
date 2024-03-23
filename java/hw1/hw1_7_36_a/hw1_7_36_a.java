@@ -1,14 +1,16 @@
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-public class hw1_7_36
+public class hw1_7_36_a
 {
 	public static void main(String[] args) {
 		int accumulator = 0, operation, operand, temp, input, haltFlag = 0, index = 0;
 		int[] memory = new int[100];
-		File file = new File("hw1_7_36.sml");
+		File file = new File("hw1_7_36_a.sml");
 		Scanner stdioScanner = new Scanner(System.in);
 
+		memory[12] = -10;
+		memory[13] = 1;
         try {
             // Create a fileScanner to read from the file
             Scanner fileScanner = new Scanner(file);
@@ -82,7 +84,9 @@ public class hw1_7_36
 			index++;
 
 		}
-
+		// for(int tempc: memory){
+		// 	System.out.printf("%d\n", tempc);
+		// }
 	
 	}
 }
